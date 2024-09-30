@@ -12,8 +12,10 @@ import math as m
 class CtrlWardi(BlimpController):
 
     def __init__(self, dT):
-        print("HIHIHIHI")
+        # print("HIHIHIHI")
         super().__init__(dT)
+        # print(f"dt = {dT}")
+        # exit(0)
         self.alpha = np.array([[20, 30, 30, 30]]).T
         # self.alpha = np.array([[40, 40, 40, 40]]).T
         # self.alpha = np.array([[25,35,35,35]]).T # Speed-up parameter (maybe play with uniform alpha values rather than ones that change for each input)
@@ -28,6 +30,7 @@ class CtrlWardi(BlimpController):
         C = np.zeros([4,12])
         C[0,6],C[1,7], C[2,8], C[3,11] = 1,1,1,1
         self.C = C
+        self.T_lookahead = 0.8
 
     def normalize_angle(self, angle):
         """ Normalize the angle to the range [-pi, pi]. """
@@ -45,11 +48,18 @@ class CtrlWardi(BlimpController):
         return delta_yaw
 
     def get_tracking_error(self, sim, n, pred):
+        print(f"CURR: {[sim.get_var('x'), sim.get_var('y'), sim.get_var('z'), sim.get_var('psi')]}")
         print(f"REF: {[self.traj_x[n], self.traj_y[n], self.traj_z[n], self.traj_psi[n]]}")
-        err_x = self.traj_x[n] - pred[0][0]
-        err_y = self.traj_y[n] - pred[1][0]
-        err_z = self.traj_z[n] - pred[2][0]
-        err_psi = self.shortest_path_yaw(self.traj_psi[n], pred[3][0])
+        n_lookahead = int(self.T_lookahead / self.dT)
+        n_plus_lookahead = n + n_lookahead
+        # print(f"{n_plus_lookahead =}")
+        # if n > 5:
+        #     sys.exit(1)
+        err_x = self.traj_x[n_plus_lookahead] - pred[0][0]
+        # exit(0)
+        err_y = self.traj_y[n_plus_lookahead] - pred[1][0]
+        err_z = self.traj_z[n_plus_lookahead] - pred[2][0]
+        err_psi = self.shortest_path_yaw(self.traj_psi[n_plus_lookahead], pred[3][0])
         return np.array([[err_x, err_y, err_z, err_psi]]).T
     
     
@@ -57,8 +67,8 @@ class CtrlWardi(BlimpController):
         """ DO NOT USE (SLOW- not compiled in C): Predicts the system output state using a numerically integrated nonlinear model with 0-order hold. """
         
 
-        T_lookahead = 0.1
-        integration_step = 0.05
+        T_lookahead = self.T_lookahead
+        integration_step = 0.1
         integrations = T_lookahead / integration_step
         integrations = int(integrations)     
 
@@ -292,10 +302,14 @@ class CtrlWardi(BlimpController):
         print(f"Getting control action at time {sim.get_current_timestep()}")        
         sim.start_timer()
         n = sim.get_current_timestep()
+        # print(f"{n = }")
+        # if n > 3:
+        #     sys.exit(1)
         
         if n >= len(self.traj_x)-5:
             return None
 
+        t0 = time.time()
         pred = self.get_prediction(sim)
         error = self.get_tracking_error(sim, n, pred)
         NR = self.jac_inv @ error # calculates newton-raphson control input without speed-up parameter
@@ -304,13 +318,14 @@ class CtrlWardi(BlimpController):
         udot = phi + v # placeholder for if we apply Integral CBFs to the system
         change_u = udot * self.dT
         u = self.last_input + self.alpha * change_u
-        # u[3] = 0.
 
+        print(f"Total NR Comp Time: {time.time() - t0 = }")
         print(f"{pred = }")
         print(f"{error = }")
         print(f"{NR = }")
         print(f"{udot = }")
         print(f"{change_u = }")
+        print(f"prev_u: {self.last_input}")
         print(f"{u = }")
 
         if np.isnan(u).any():

@@ -75,13 +75,13 @@ def main(args=sys.argv):
         
     try:
         dT = 0.01
-        ctrl_dT = 0.01
-        ctrl_dT = 0.05 #
+        ctrl_dT = dT
+        # ctrl_dT = 0.05 #
         ctrl_period = int(ctrl_dT / dT)
         
         ctrl_ctr = 0
         
-        STOP_TIME = 30 #30
+        STOP_TIME = 45 #30
         PLOT_ANYTHING = True#False
         PLOT_WAVEFORMS = True#False
 
@@ -115,11 +115,11 @@ def main(args=sys.argv):
 
         # print("4")
         u = ctrl.get_ctrl_action(sim) 
-        print(u.shape) 
+        # print(u.shape) 
         for n in range(int(STOP_TIME / dT)):
             print("Time: " + str(round(n*dT, 2))) 
             sim.update_model(u)
-            print(f"{ctrl_ctr =}, {ctrl_period =}")
+            # print(f"{ctrl_ctr =}, {ctrl_period =}")
             ctrl_ctr += 1
             if ctrl_ctr > ctrl_period:
                 print("Getting control action")
@@ -127,9 +127,9 @@ def main(args=sys.argv):
                 # print(u.shape) 
                 ctrl_ctr = 0
             
-            print(f"input: {u}")
-            print(f"Current state: {round(sim.get_var('x'), 6)}, {round(sim.get_var('y'), 6)}, {round(sim.get_var('z'), 6)}, {round(sim.get_var('psi'), 6)}")
-            print(f"Control: {round(u[0].item(), 6)}, {round(u[1].item(), 6)}, {round(u[2].item(), 6)}, {round(u[3].item(), 6)}")
+            # print(f"input: {u}")
+            # print(f"Current state: {round(sim.get_var('x'), 6)}, {round(sim.get_var('y'), 6)}, {round(sim.get_var('z'), 6)}, {round(sim.get_var('psi'), 6)}")
+            # print(f"Control: {round(u[0].item(), 6)}, {round(u[1].item(), 6)}, {round(u[2].item(), 6)}, {round(u[3].item(), 6)}")
 
 
             # plotter.update_plot(sim)
