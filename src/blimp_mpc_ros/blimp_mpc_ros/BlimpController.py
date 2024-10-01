@@ -78,3 +78,7 @@ class BlimpController():
     
     def get_metadata(self):
         return self.metadata
+    
+
+    def get_cbf_data(self):
+        return self.cbf_history

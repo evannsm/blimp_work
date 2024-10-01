@@ -20,6 +20,7 @@ class BlimpLogger:
                              'fx', 'fy', 'fz', 'tauz',
                              'x_ref', 'y_ref', 'z_ref', 'psi_ref',
                              'x_error', 'y_error', 'z_error', 'psi_error',
+                             'v_fx', 'v_fy', 'v_fz', 'v_tz',
                              'solve_time',
                              'metadata'])
             
@@ -45,13 +46,30 @@ class BlimpLogger:
             metadata = np.concatenate((sim.get_current_timestep() * np.ones(1),
                                        sim.dT * np.ones(1),
                     np.pad(ctrl_metadata, ((0, n-len(ctrl_metadata)-2))))).reshape((n,1))
+            
 
+            cbf_data = ctrl.get_cbf_data()
+
+            # print(f"{time_history.shape =}")
+            # print(f"{state_history.shape =}")
+            # print(f"{state_dot_history.shape =}")
+            # print(f"{u_history.shape =}")
+            # print(f"{trajectory.shape =}")
+            # print(f"{error.shape =}")
+            # print(f"{cbf_data.shape =}")
+            size_diff = state_history.shape[0] - cbf_data.shape[0]
+            # print(f"{size_diff =}")
+            padded_cbf_data = np.pad(cbf_data, ((0, size_diff), (0, 0)))
+            # print(f"{padded_cbf_data.shape =}")
+            # print(f"{padded_cbf_data[-1,:] =}")
+            # print(f"{cbf_data[-1,:] =}")
             data = np.hstack((time_history,
                               state_history,
                               state_dot_history,
                               u_history,
                               trajectory,
                               error,
+                              padded_cbf_data,
                               solve_times,
                               metadata))
             
