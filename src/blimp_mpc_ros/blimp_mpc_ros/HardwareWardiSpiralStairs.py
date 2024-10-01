@@ -19,7 +19,7 @@ class HardwareWardiSpiralStairs(CtrlWardi):
         z0 = sim.get_var('z')
         psi0 = sim.get_var('psi')
         
-        trajectory = Trajectories.get_spiral_stairs(x0, y0, z0, psi0, self.dT, which_one=2)
+        trajectory = Trajectories.get_spiral_stairs(x0, y0, z0, psi0, self.dT, which_one=1)
         self.init_trajectory(trajectory)
         
         self.is_initialized = True
