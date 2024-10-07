@@ -70,7 +70,7 @@ class Trajectories:
         center_z = -1.3
 
         # Calculate angle offset to the initial point (for vertical circle in X-Z plane)
-        a = np.array([x0 - center_x, y0 - center_z])              # Define the vectors
+        a = np.array([x0 - center_x, z0 - center_z])              # Define the vectors
         b = np.array([R - center_x, center_z - center_z])
         dot_product = np.dot(a, b) /(np.linalg.norm(a) * np.linalg.norm(b))
         angle = np.arccos(dot_product)      # This gives the angle in radians
