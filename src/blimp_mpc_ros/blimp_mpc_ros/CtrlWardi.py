@@ -17,12 +17,12 @@ class CtrlWardi(BlimpController):
         self.use_CBFs = True
         # print(f"dt = {dT}")
         # exit(0)
-        self.alpha = np.array([[20, 30, 30, 30]]).T
+        self.alpha = np.array([[30, 30, 30, 20]]).T
         # self.alpha = np.array([[40, 40, 40, 40]]).T
         # self.alpha = np.array([[25,35,35,35]]).T # Speed-up parameter (maybe play with uniform alpha values rather than ones that change for each input)
-        self.u = np.array([0, 0, 0, 0]).T
+        # self.u = np.array([0, 0, 0, 0]).T
         self.dT = dT
-        self.last_input = 0*np.array([[0.0, 0.0, 0.0, 0.0]]).T
+        self.last_input = 0*np.array([[0.0, 0.0, -1*0.15*9.806, 0.0]]).T
 
         self.metadata = np.array([
             str(self.alpha),
@@ -442,7 +442,7 @@ class CtrlWardi(BlimpController):
 
         max_fx = 0.035
         max_fy = 0.035
-        max_fz = 0.2
+        max_fz = 0.4
         max_tz = 0.001
 
 

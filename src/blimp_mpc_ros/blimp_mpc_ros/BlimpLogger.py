@@ -1,17 +1,28 @@
+import os
 import csv
 import numpy as np
 
 class BlimpLogger:
 
     def __init__(self, filename):
-        self.filename = filename
-        print("Logging to " + str(self.filename))
+        # self.filename = filename[0]
+        base_path = "/home/factslabegmc/final_blimp_ws/src/blimp_mpc_ros/logs/z_hardware_evanns_logs/"
+        # self.full_path = os.path.join(base_path, self.filename)
+        # print(f"Logging to: {self.full_path}")
+
+        # base_path = os.path.dirname(os.path.abspath(__file__))        # Get the directory where the script is located
+        # base_path = os.path.join(base_path, 'logs/z_hardware_evanns_logs')
+        print(f"logger {base_path = }")        # Print the base path
+        self.filename = filename        # Assuming 'filename' is passed or defined as a list
+        self.full_path = os.path.join(base_path, self.filename)        # Combine the base path with the filename
+        print(f"Logging to: {self.full_path}")        # Print the full path
+        os.makedirs(os.path.dirname(self.full_path), exist_ok=True)        # Ensure the directory exists, and creates it if it doesn't
 
     def log(self, sim, ctrl):
         if ctrl.get_trajectory() is None:
             return
     
-        with open('/home/factslabegmc/final_blimp_ws/src/blimp_mpc_ros/logs/evanns/' + self.filename, 'w', newline='') as outfile:
+        with open(self.full_path, 'w', newline='') as outfile:
             writer = csv.writer(outfile)
        
             writer.writerow(['time',
@@ -20,7 +31,7 @@ class BlimpLogger:
                              'fx', 'fy', 'fz', 'tauz',
                              'x_ref', 'y_ref', 'z_ref', 'psi_ref',
                              'x_error', 'y_error', 'z_error', 'psi_error',
-                             'v_fx', 'v_fy', 'v_fz', 'v_tz',
+                            #  'v_fx', 'v_fy', 'v_fz', 'v_tz',
                              'solve_time',
                              'metadata'])
             
@@ -57,9 +68,9 @@ class BlimpLogger:
             # print(f"{trajectory.shape =}")
             # print(f"{error.shape =}")
             # print(f"{cbf_data.shape =}")
-            size_diff = state_history.shape[0] - cbf_data.shape[0]
+            # size_diff = state_history.shape[0] - cbf_data.shape[0]
             # print(f"{size_diff =}")
-            padded_cbf_data = np.pad(cbf_data, ((0, size_diff), (0, 0)))
+            # padded_cbf_data = np.pad(cbf_data, ((0, size_diff), (0, 0)))
             # print(f"{padded_cbf_data.shape =}")
             # print(f"{padded_cbf_data[-1,:] =}")
             # print(f"{cbf_data[-1,:] =}")
@@ -69,7 +80,7 @@ class BlimpLogger:
                               u_history,
                               trajectory,
                               error,
-                              padded_cbf_data,
+                            #   padded_cbf_data,
                               solve_times,
                               metadata))
             

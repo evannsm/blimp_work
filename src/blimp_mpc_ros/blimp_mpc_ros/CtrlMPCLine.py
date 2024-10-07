@@ -15,7 +15,7 @@ class CtrlMPCLine(CtrlMPC):
         super().__init__(dT, rta_dT, rta_horizon)
 
     def init_sim(self, sim):
-        print("HEREREERE")
+        # print("HEREREERE")
         x0 = sim.get_var('x')
         y0 = sim.get_var('y')
         z0 = sim.get_var('z')
@@ -32,16 +32,16 @@ class CtrlMPCLine(CtrlMPC):
         # the second derivatives of the trajectory.
 
         # Initialize the optimization program.
-        print('a')
+        # print('a')
         self.setup_optimization_program(sim)
 
         # trajectory = self.get_rta_trajectory(0)
         # self.set_cost(trajectory)
-        print('b')
+        # print('b')
         self.compute_interpolated_trajectory(0) # Instead.
-        print('c')
+        # print('c')
         self.solve_optimization_program(sim) # Initial solution.
-        print('d')
+        # print('d')
         # trajectory needs to be converted from a tuple to a numpy array
         # return trajectory
 

@@ -17,21 +17,36 @@ from . CtrlLQRHelix import CtrlLQRHelix
 from . CtrlMPCLine import CtrlMPCLine
 from . CtrlMPCBox import CtrlMPCBox
 
-from . CtrlWardiLine import CtrlWardiLine
-from . CtrlWardiHelix import CtrlWardiHelix
-from . CtrlWardiTriangle import CtrlWardiTriangle
-from . CtrlWardiCircle import CtrlWardiCircle
-from . CtrlWardiCircleYaw import CtrlWardiCircleYaw
-
 from . CtrlCasadiHelix import CtrlCasadiHelix
+from . CtrlCasadiTriangle import CtrlCasadiTriangle
 
-from . HardwareWardiCircleVert import HardwareWardiCircleVert
-from . HardwareWardiCircleHorz import HardwareWardiCircleHorz
-from . HardwareWardiFig8Horz import HardwareWardiFig8Horz
-from . HardwareWardiFig8VertShort import HardwareWardiFig8VertShort
-from . HardwareWardiFig8VertTall import HardwareWardiFig8VertTall
-from . HardwareWardiCircleYaw import HardwareWardiCircleYaw
-from . HardwareWardiSpiralStairs import HardwareWardiSpiralStairs
+from . xHardwareWardiCircleHorz import HardwareWardiCircleHorz
+from . xHardwareWardiCircleVert import HardwareWardiCircleVert
+from . xHardwareWardiFig8Horz import HardwareWardiFig8Horz
+from . xHardwareWardiFig8VertShort import HardwareWardiFig8VertShort
+from . xHardwareWardiFig8VertTall import HardwareWardiFig8VertTall
+from . xHardwareWardiCircleHorzSpin import HardwareWardiCircleHorzSpin
+from . xHardwareWardiHelix import HardwareWardiHelix
+from . xHardwareWardiHelixSpin import HardwareWardiHelixSpin
+
+from . yHardwareCasadiCircleHorz import HardwareCasadiCircleHorz
+from . yHardwareCasadiCircleVert import HardwareCasadiCircleVert
+from . yHardwareCasadiFig8Horz import HardwareCasadiFig8Horz
+from . yHardwareCasadiFig8VertShort import HardwareCasadiFig8VertShort
+from . yHardwareCasadiFig8VertTall import HardwareCasadiFig8VertTall
+from . yHardwareCasadiCircleHorzSpin import HardwareCasadiCircleHorzSpin
+from . yHardwareCasadiHelix import HardwareCasadiHelix
+from . yHardwareCasadiHelixSpin import HardwareCasadiHelixSpin
+
+from . zHardwareCBFCircleHorz import HardwareCBFCircleHorz
+from . zHardwareCBFCircleVert import HardwareCBFCircleVert
+from . zHardwareCBFFig8Horz import HardwareCBFFig8Horz
+from . zHardwareCBFFig8VertShort import HardwareCBFFig8VertShort
+from . zHardwareCBFFig8VertTall import HardwareCBFFig8VertTall
+from . zHardwareCBFCircleHorzSpin import HardwareCBFCircleHorzSpin
+from . zHardwareCBFHelix import HardwareCBFHelix
+from . zHardwareCBFHelixSpin import HardwareCBFHelixSpin
+
 import numpy as np
 import sys
 import time
@@ -58,27 +73,41 @@ def main(args=sys.argv):
         'mpc_line': CtrlMPCLine,
         'rta_box': CtrlMPCBox,
         'casadi_helix': CtrlCasadiHelix,
-        'wardi_line' : CtrlWardiLine,
-        'wardi_helix' : CtrlWardiHelix,
-        'wardi_triangle' : CtrlWardiTriangle,
-        'wardi_circle' : CtrlWardiCircle,
-        'hardware_wardi_circle_vert' : HardwareWardiCircleVert,
+        'casadi_triangle' : CtrlCasadiTriangle,
+        
         'hardware_wardi_circle_horz' : HardwareWardiCircleHorz,
+        'hardware_wardi_circle_vert' : HardwareWardiCircleVert,
         'hardware_wardi_fig8_horz' : HardwareWardiFig8Horz,
         'hardware_wardi_fig8_vert_short' : HardwareWardiFig8VertShort,
         'hardware_wardi_fig8_vert_tall' : HardwareWardiFig8VertTall,
-        'hardware_wardi_circle_yaw' : HardwareWardiCircleYaw,
-        'hardware_wardi_spiral_stairs' : HardwareWardiSpiralStairs,
+        'hardware_wardi_circle_horz_spin' : HardwareWardiCircleHorzSpin,
+        'hardware_wardi_helix' : HardwareWardiHelix,
+        'hardware_wardi_helix_spin' : HardwareWardiHelixSpin,
 
+        'hardware_casadi_circle_horz' : HardwareCasadiCircleHorz,
+        'hardware_casadi_circle_vert' : HardwareCasadiCircleVert,
+        'hardware_casadi_fig8_horz' : HardwareCasadiFig8Horz,
+        'hardware_casadi_fig8_vert_short' : HardwareCasadiFig8VertShort,
+        'hardware_casadi_fig8_vert_tall' : HardwareCasadiFig8VertTall,
+        'hardware_casadi_circle_horz_spin' : HardwareCasadiCircleHorzSpin,
+        'hardware_casadi_helix' : HardwareCasadiHelix,
+        'hardware_casadi_helix_spin' : HardwareCasadiHelixSpin,
+
+        'hardware_cbf_circle_horz' : HardwareCBFCircleHorz,
+        'hardware_cbf_circle_vert' : HardwareCBFCircleVert,
+        'hardware_cbf_fig8_horz' : HardwareCBFFig8Horz,
+        'hardware_cbf_fig8_vert_short' : HardwareCBFFig8VertShort,
+        'hardware_cbf_fig8_vert_tall' : HardwareCBFFig8VertTall,
+        'hardware_cbf_circle_horz_spin' : HardwareCBFCircleHorzSpin,
+        'hardware_cbf_helix' : HardwareCBFHelix,
+        'hardware_cbf_helix_spin' : HardwareCBFHelixSpin,
 
     }
         
     try:
         dT = 0.01
-        ctrl_dT = dT
-        # ctrl_dT = 0.05 #
+        ctrl_dT = dT #0.05
         ctrl_period = int(ctrl_dT / dT)
-        
         ctrl_ctr = 0
         
         STOP_TIME = 25 #30
@@ -93,29 +122,30 @@ def main(args=sys.argv):
         print("Running blimp simulator: " + args[1])
         
         ## SIMULATION
-        print('here')
         sim = Simulator(dT)
+        sim.set_var('x', 0.4)
+        sim.set_var('y', -.5)
+        # sim.set_var('z', -0.5)
 
-        print('there')
-        # print("1")
+
         plotter = BlimpPlotter()
         plotter.init_plot(WINDOW_TITLE,
                 waveforms=PLOT_WAVEFORMS,
                 disable_plotting=(not PLOT_ANYTHING))
-        # print("2")
+        
         ctrl = Controller(ctrl_dT)
-        # print("3")
         ctrl.init_sim(sim)
-
-        # print(f"{ctrl.traj_x[0] =}")
-        sim.set_var('x', ctrl.traj_x[0])
-        sim.set_var('y', ctrl.traj_y[0])
+        # sim.set_var('x', ctrl.traj_x[0])
+        # sim.set_var('y', ctrl.traj_y[0])
         sim.set_var('z', ctrl.traj_z[0])
         sim.set_var('psi', ctrl.traj_psi[0])
 
-        # print("4")
+        x0 = sim.get_var('x')
+        y0 = sim.get_var('y')
+        z0 = sim.get_var('z')
+        print(f"HERE: {x0 =}, {y0 =}, {z0 =}")
         u = ctrl.get_ctrl_action(sim) 
-        # print(u.shape) 
+
         for n in range(int(STOP_TIME / dT)):
             print("Time: " + str(round(n*dT, 2))) 
             sim.update_model(u)

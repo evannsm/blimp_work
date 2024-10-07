@@ -20,6 +20,7 @@ class BlimpController():
         self.order = 12
         self.num_inputs = 4
         self.num_outputs = 6
+        self.cbf_history = np.array([0]).reshape(-1,1)
         
     def init_trajectory(self, trajectory):
         self.traj_x         = trajectory[0]

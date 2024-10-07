@@ -63,7 +63,7 @@ class CtrlCasadi(BlimpController):
         	[0, 1/(max_fy**2), 0, 0],
         	[0, 0, 1/(max_fz**2), 0],
         	[0, 0, 0, 1/(max_tz**2)]
-        ]) * 100
+        ]) * 1
 
         # Setup controller.
         N = 10 # MPC horizon length
