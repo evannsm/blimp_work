@@ -1,7 +1,7 @@
 import rclpy
 
 from . BlimpMPCNode import BlimpMPCNode
-from . xHardwareWardiCircleHorz import HardwareWardiCircleVert
+from . xHardwareWardiCircleVert import HardwareWardiCircleVert
 import sys
 
 def main(args=sys.argv):

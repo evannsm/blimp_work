@@ -16,7 +16,6 @@ class HardwareWardiCircleHorz(CtrlWardi):
     def init_sim(self, sim):
         x0 = sim.get_var('x')
         y0 = sim.get_var('y')
-        print(f"THERE: {x0 =}, {y0 =}")
         z0 = sim.get_var('z')
         psi0 = sim.get_var('psi')
         

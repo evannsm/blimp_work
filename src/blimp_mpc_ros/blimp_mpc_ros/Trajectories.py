@@ -1,14 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
+import jax
+import jax.numpy as jnp
 
 class Trajectories:
-    def get_circle_horz(x0, y0, z0, psi0, dT, TRACKING_TIME=45, SETTLE_TIME=2):
+    def get_circle_horz(x0, y0, z0, psi0, dT, TRACKING_TIME=50, SETTLE_TIME=2):
         # Trajectory definition
         tracking_time = np.arange(0, TRACKING_TIME, dT)
         settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
 
-        desired_time = 45.0
+        desired_time = 50.0
         tScale = desired_time / TRACKING_TIME
 
         R = .8
@@ -26,12 +28,13 @@ class Trajectories:
         print(f"{a =}, {b =}, {dot_product =}, {cross_product_z =}. {angle =}")
 
         
-        #do it without settle time
+        # #do it without settle time
         traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
         traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
         traj_z = np.array([(desired_height) * np.ones(len(tracking_time))]).reshape(-1)
+        
+        
         traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
-
         traj_x_dot = np.zeros(len(tracking_time))
         traj_y_dot = np.zeros(len(tracking_time))
         traj_z_dot = np.zeros(len(tracking_time))
@@ -41,19 +44,51 @@ class Trajectories:
         traj_z_ddot = np.zeros(len(tracking_time))
         traj_psi_ddot = np.zeros(len(tracking_time))
 
+
+        # # Define functions for traj_x, traj_y, traj_z, and traj_psi
+        # def traj_x_func(t):
+        #     return center_x + R * jnp.cos(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        # def traj_y_func(t):
+        #     return center_y + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        # def traj_z_func(t):
+        #     return desired_height
+
+        # def traj_psi_func(t):
+        #     return 0.0
+
+        # # Compute the trajectories
+        # traj_x = jax.vmap(traj_x_func)(tracking_time)
+        # traj_y = jax.vmap(traj_y_func)(tracking_time)
+        # traj_z = jax.vmap(traj_z_func)(tracking_time)
+        # traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        # traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        # traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
+        # traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)  # Constant, derivative will be 0
+        # traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
+
+        # Compute the second derivatives
+        # traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        # traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
+        # traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)  # Second derivative will be 0
+        # traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
+
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
         traj_y = np.concatenate((traj_y, traj_y[-1] * np.ones(len(settle_time))))
         traj_z = np.concatenate((traj_z, traj_z[-1] * np.ones(len(settle_time))))
         traj_psi = np.concatenate((traj_psi, traj_psi[-1] * np.ones(len(settle_time))))
-        traj_x_dot = np.concatenate((traj_x_dot, traj_x_dot[-1] * np.ones(len(settle_time))))
-        traj_y_dot = np.concatenate((traj_y_dot, traj_y_dot[-1] * np.ones(len(settle_time))))
-        traj_z_dot = np.concatenate((traj_z_dot, traj_z_dot[-1] * np.ones(len(settle_time))))
-        traj_psi_dot = np.concatenate((traj_psi_dot, traj_psi_dot[-1] * np.ones(len(settle_time))))
-        traj_x_ddot = np.concatenate((traj_x_ddot, traj_x_ddot[-1] * np.ones(len(settle_time))))
-        traj_y_ddot = np.concatenate((traj_y_ddot, traj_y_ddot[-1] * np.ones(len(settle_time))))
-        traj_z_ddot = np.concatenate((traj_z_ddot, traj_z_ddot[-1] * np.ones(len(settle_time))))
-        traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.ones(len(settle_time))))
+        traj_x_dot = np.concatenate((traj_x_dot, traj_x_dot[-1] * np.zeros(len(settle_time))))
+        traj_y_dot = np.concatenate((traj_y_dot, traj_y_dot[-1] * np.zeros(len(settle_time))))
+        traj_z_dot = np.concatenate((traj_z_dot, traj_z_dot[-1] * np.zeros(len(settle_time))))
+        traj_psi_dot = np.concatenate((traj_psi_dot, traj_psi_dot[-1] * np.zeros(len(settle_time))))
+        traj_x_ddot = np.concatenate((traj_x_ddot, traj_x_ddot[-1] * np.zeros(len(settle_time))))
+        traj_y_ddot = np.concatenate((traj_y_ddot, traj_y_ddot[-1] * np.zeros(len(settle_time))))
+        traj_z_ddot = np.concatenate((traj_z_ddot, traj_z_ddot[-1] * np.zeros(len(settle_time))))
+        traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.zeros(len(settle_time))))
         return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
 
     def get_circle_vert(x0, y0, z0, psi0, dT, TRACKING_TIME=45, SETTLE_TIME=2):
@@ -61,13 +96,13 @@ class Trajectories:
         tracking_time = np.arange(0, TRACKING_TIME, dT)
         settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
 
-        desired_time = 45.0
+        desired_time = 35.0
         tScale = desired_time / TRACKING_TIME
         
 
         R = 0.6
         center_x = 0.0
-        center_z = -1.3
+        center_z = -1.0
 
         # Calculate angle offset to the initial point (for vertical circle in X-Z plane)
         a = np.array([x0 - center_x, z0 - center_z])              # Define the vectors
@@ -108,18 +143,18 @@ class Trajectories:
         traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.ones(len(settle_time))))
         return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
      
-    def get_fig8_horz(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20):
+    def get_fig8_horz(x0, y0, z0, psi0, dT, TRACKING_TIME=60, SETTLE_TIME=2):
         # Trajectory definition
         tracking_time = np.arange(0, TRACKING_TIME, dT)
         settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
 
-        desired_time = 20.0
+        desired_time = 60
         tScale = desired_time / TRACKING_TIME
 
-        R = 0.35
+        R = 0.6
         center_x = 0.0
         center_y = 0.0
-        desired_height = -1.3
+        desired_height = -1.1
 
 
         #do it without settle time
@@ -151,21 +186,21 @@ class Trajectories:
         traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.ones(len(settle_time))))
         return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
 
-    def get_fig8_vert_short(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20):
+    def get_fig8_vert_short(x0, y0, z0, psi0, dT, TRACKING_TIME=60, SETTLE_TIME=2):
         # Trajectory definition
         tracking_time = np.arange(0, TRACKING_TIME, dT)
         settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
 
-        desired_time = 20.0
+        desired_time = 60.0
         tScale = desired_time / TRACKING_TIME
 
         R = 0.6
         center_y = 0.0
-        center_z = -1.3
+        center_z = -1.0
 
         #do it without settle time
-        traj_x = np.concatenate([x0 * np.ones(len(tracking_time))]).reshape(-1)
-        traj_y = np.concatenate([y0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        traj_y = np.concatenate([y0 * np.ones(len(tracking_time))]).reshape(-1)
+        traj_x = np.concatenate([x0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
         traj_z = np.concatenate([z0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
         traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
         traj_x_dot = np.zeros(len(tracking_time))
@@ -192,21 +227,21 @@ class Trajectories:
         traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.ones(len(settle_time))))
         return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
 
-    def get_fig8_vert_tall(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20):
+    def get_fig8_vert_tall(x0, y0, z0, psi0, dT, TRACKING_TIME=60, SETTLE_TIME=2):
         # Trajectory definition
         tracking_time = np.arange(0, TRACKING_TIME, dT)
         settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
 
-        desired_time = 20.0
+        desired_time = 60.0
         tScale = desired_time / TRACKING_TIME
 
-        R = 0.6
+        R = 0.4
         # center_y = 0.0
-        center_z = -1.3
+        center_z = -0.8
 
 
-        traj_x = np.concatenate([x0 * np.ones(len(tracking_time))]).reshape(-1)
-        traj_y = np.concatenate([y0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        traj_y = np.concatenate([y0 * np.ones(len(tracking_time))]).reshape(-1)
+        traj_x = np.concatenate([x0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
         traj_z = np.concatenate([z0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
         traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
         traj_x_dot = np.zeros(len(tracking_time))
@@ -233,15 +268,15 @@ class Trajectories:
         traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.ones(len(settle_time))))
         return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
 
-    def get_circle_horz_spin(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20):
+    def get_circle_horz_spin(x0, y0, z0, psi0, dT, TRACKING_TIME=45, SETTLE_TIME=2):
         # Trajectory definition
         print(f"SPIN")
         tracking_time = np.arange(0, TRACKING_TIME, dT)
         settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
 
-        desired_time = 25.0
+        desired_time = 45.0
         tScale = desired_time / TRACKING_TIME
-        yaw_rotations_per_trajectory = 3
+        yaw_rotations_per_trajectory = 3.0
 
 
         R = .8
@@ -290,11 +325,114 @@ class Trajectories:
         traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.ones(len(settle_time))))
         return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
 
-    def get_helix(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20):
-        pass
+    def get_helix(x0, y0, z0, psi0, dT, TRACKING_TIME=60, SETTLE_TIME=2):
+        # Trajectory definition
+        tracking_time = np.arange(0, TRACKING_TIME, dT)
+        settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
 
-    def get_helix_spin(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20):
-        pass
+        desired_time = 60.0
+        tScale = desired_time / TRACKING_TIME
+
+        R = .5
+        center_x = 0.0
+        center_y = 0.0
+        desired_height = -1.0
+        height_variance = 0.4
+
+        # Calculate angle offset to the initial point (for vertical circle in X-Z plane)
+        a = np.array([x0 - center_x, y0 - center_y])              # Define the vectors
+        b = np.array([R - center_x, center_y - center_y])
+        dot_product = np.dot(a, b) /(np.linalg.norm(a) * np.linalg.norm(b))
+        angle = np.arccos(dot_product)      # This gives the angle in radians
+        cross_product_z = np.cross(np.append(b, 0), np.append(a, 0))[2]     # Determine the sign using the cross product (z-component)
+        angle *= np.sign(cross_product_z)    # Multiply by the sign to get the correct angle
+        print(f"{a =}, {b =}, {dot_product =}, {cross_product_z =}. {angle =}")
+
+        
+        # #do it without settle time
+        traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
+        traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
+        traj_z = np.array([z0 + height_variance * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)    # Calculate trajectory with the phase offset
+        traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+
+        traj_x_dot = np.zeros(len(tracking_time))
+        traj_y_dot = np.zeros(len(tracking_time))
+        traj_z_dot = np.zeros(len(tracking_time))
+        traj_psi_dot = np.zeros(len(tracking_time))
+        traj_x_ddot = np.zeros(len(tracking_time))
+        traj_y_ddot = np.zeros(len(tracking_time))
+        traj_z_ddot = np.zeros(len(tracking_time))
+        traj_psi_ddot = np.zeros(len(tracking_time))
+
+        # do it with settling too
+        traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
+        traj_y = np.concatenate((traj_y, traj_y[-1] * np.ones(len(settle_time))))
+        traj_z = np.concatenate((traj_z, traj_z[-1] * np.ones(len(settle_time))))
+        traj_psi = np.concatenate((traj_psi, traj_psi[-1] * np.ones(len(settle_time))))
+        traj_x_dot = np.concatenate((traj_x_dot, traj_x_dot[-1] * np.zeros(len(settle_time))))
+        traj_y_dot = np.concatenate((traj_y_dot, traj_y_dot[-1] * np.zeros(len(settle_time))))
+        traj_z_dot = np.concatenate((traj_z_dot, traj_z_dot[-1] * np.zeros(len(settle_time))))
+        traj_psi_dot = np.concatenate((traj_psi_dot, traj_psi_dot[-1] * np.zeros(len(settle_time))))
+        traj_x_ddot = np.concatenate((traj_x_ddot, traj_x_ddot[-1] * np.zeros(len(settle_time))))
+        traj_y_ddot = np.concatenate((traj_y_ddot, traj_y_ddot[-1] * np.zeros(len(settle_time))))
+        traj_z_ddot = np.concatenate((traj_z_ddot, traj_z_ddot[-1] * np.zeros(len(settle_time))))
+        traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.zeros(len(settle_time))))
+        return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
+
+    def get_helix_spin(x0, y0, z0, psi0, dT, TRACKING_TIME=60, SETTLE_TIME=2):
+        # Trajectory definition
+        tracking_time = np.arange(0, TRACKING_TIME, dT)
+        settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)
+
+        desired_time = 60.0
+        tScale = desired_time / TRACKING_TIME
+        yaw_rotations_per_trajectory = 3.0
+        
+        R = .5
+        center_x = 0.0
+        center_y = 0.0
+        desired_height = -1.0
+        height_variance = 0.4
+
+        # Calculate angle offset to the initial point (for vertical circle in X-Z plane)
+        a = np.array([x0 - center_x, y0 - center_y])              # Define the vectors
+        b = np.array([R - center_x, center_y - center_y])
+        dot_product = np.dot(a, b) /(np.linalg.norm(a) * np.linalg.norm(b))
+        angle = np.arccos(dot_product)      # This gives the angle in radians
+        cross_product_z = np.cross(np.append(b, 0), np.append(a, 0))[2]     # Determine the sign using the cross product (z-component)
+        angle *= np.sign(cross_product_z)    # Multiply by the sign to get the correct angle
+        print(f"{a =}, {b =}, {dot_product =}, {cross_product_z =}. {angle =}")
+
+        
+        # #do it without settle time
+        traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
+        traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
+        traj_z = np.array([z0 + height_variance * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)    # Calculate trajectory with the phase offset
+        traj_psi = np.array([2 * np.pi * tracking_time * yaw_rotations_per_trajectory / TRACKING_TIME]).reshape(-1)
+
+        traj_x_dot = np.zeros(len(tracking_time))
+        traj_y_dot = np.zeros(len(tracking_time))
+        traj_z_dot = np.zeros(len(tracking_time))
+        traj_psi_dot = np.zeros(len(tracking_time))
+        traj_x_ddot = np.zeros(len(tracking_time))
+        traj_y_ddot = np.zeros(len(tracking_time))
+        traj_z_ddot = np.zeros(len(tracking_time))
+        traj_psi_ddot = np.zeros(len(tracking_time))
+
+        # do it with settling too
+        traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
+        traj_y = np.concatenate((traj_y, traj_y[-1] * np.ones(len(settle_time))))
+        traj_z = np.concatenate((traj_z, traj_z[-1] * np.ones(len(settle_time))))
+        traj_psi = np.concatenate((traj_psi, traj_psi[-1] * np.ones(len(settle_time))))
+        traj_x_dot = np.concatenate((traj_x_dot, traj_x_dot[-1] * np.zeros(len(settle_time))))
+        traj_y_dot = np.concatenate((traj_y_dot, traj_y_dot[-1] * np.zeros(len(settle_time))))
+        traj_z_dot = np.concatenate((traj_z_dot, traj_z_dot[-1] * np.zeros(len(settle_time))))
+        traj_psi_dot = np.concatenate((traj_psi_dot, traj_psi_dot[-1] * np.zeros(len(settle_time))))
+        traj_x_ddot = np.concatenate((traj_x_ddot, traj_x_ddot[-1] * np.zeros(len(settle_time))))
+        traj_y_ddot = np.concatenate((traj_y_ddot, traj_y_ddot[-1] * np.zeros(len(settle_time))))
+        traj_z_ddot = np.concatenate((traj_z_ddot, traj_z_ddot[-1] * np.zeros(len(settle_time))))
+        traj_psi_ddot = np.concatenate((traj_psi_ddot, traj_psi_ddot[-1] * np.zeros(len(settle_time))))
+        return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
 
 
     # def get_spiral_stairs(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20, which_one=1):
@@ -315,7 +453,7 @@ class Trajectories:
     #     if which_one == 1:
     #         # go up and down in z periodically while staying still in x,y
     #         traj_x = np.concatenate([x0 * np.ones(len(tracking_time))]).reshape(-1)
-    #         traj_y = np.concatenate([y0 * np.ones(len(tracking_time))]).reshape(-1)
+    #         traj_y = np.concatenate([yhelix0 * np.ones(len(tracking_time))]).reshape(-1)
     #         traj_z = np.concatenate([z0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
     #         traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
                 
@@ -447,7 +585,7 @@ class Trajectories:
         
     #     return (traj_x, traj_y, traj_z, traj_psi, traj_x_dot, traj_y_dot, traj_z_dot, traj_psi_dot, traj_x_ddot, traj_y_ddot, traj_z_ddot, traj_psi_ddot)
 
-    # def get_circle_yaw(x0, y0, z0, psi0, dT, TRACKING_TIME=40, SETTLE_TIME=20):
+    # def get_circle_yaw(x0, y0, z0, psi0, donesT, TRACKING_TIME=40, SETTLE_TIME=20):
     #     # Trajectory definition
     #     tracking_time = np.arange(0, TRACKING_TIME, dT)
     #     settle_time = np.arange(TRACKING_TIME, TRACKING_TIME + SETTLE_TIME + 1, dT)

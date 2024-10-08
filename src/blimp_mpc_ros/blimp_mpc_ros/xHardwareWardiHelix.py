@@ -19,7 +19,7 @@ class HardwareWardiHelix(CtrlWardi):
         z0 = sim.get_var('z')
         psi0 = sim.get_var('psi')
         
-        trajectory = Trajectories.get_helix(x0, y0, z0, psi0, self.dT, which_one=1)
+        trajectory = Trajectories.get_helix(x0, y0, z0, psi0, self.dT)
         self.init_trajectory(trajectory)
         
         self.is_initialized = True

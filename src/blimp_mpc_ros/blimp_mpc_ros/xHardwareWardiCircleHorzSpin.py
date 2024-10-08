@@ -21,6 +21,6 @@ class HardwareWardiCircleHorzSpin(CtrlWardi):
         
         trajectory = Trajectories.get_circle_horz_spin(x0, y0, z0, psi0, self.dT)
         self.init_trajectory(trajectory)
-        exit(1)
+        # exit(1)
         self.is_initialized = True
 

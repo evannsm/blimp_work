@@ -52,6 +52,14 @@ class CtrlCasadi(BlimpController):
             [0, 0, 0, 0, 0, 0, 1/(max_z_err**2), 0],       # z
             [0, 0, 0, 0, 0, 0, 0, 10/(max_psi_err**2)],       # psi
         ])
+
+        # # Re-define in a 4x4 matrix, using only the position and yaw
+        # self.Q = np.array([
+        #     [1/(max_x_err**2), 0, 0, 0],       # x
+        #     [0, 1/(max_y_err**2), 0, 0],       # y
+        #     [0, 0, 1/(max_z_err**2), 0],       # z
+        #     [0, 0, 0, 10/(max_psi_err**2)],       # psi
+        # ])
         
         max_fx = 0.035
         max_fy = 0.035
@@ -66,7 +74,7 @@ class CtrlCasadi(BlimpController):
         ]) * 1
 
         # Setup controller.
-        N = 10 # MPC horizon length
+        N = 14 # MPC horizon length
 
         self.opti = casadi.Opti()
         self.opt_u = self.opti.variable(4, N)
@@ -74,6 +82,7 @@ class CtrlCasadi(BlimpController):
 
         # u_ref = self.opti.parameter(N, 4)
         self.y_ref = self.opti.parameter(8, N) # In the output space.
+        # self.y_ref = self.opti.parameter(4, N) # In the output space.
         self.opt_x_t = self.opti.parameter(12,) # Initialization
 
         opts_setting = {
@@ -95,6 +104,7 @@ class CtrlCasadi(BlimpController):
         gamma = .1 # Weighting on the control effort.
         for i in range(N):
             state_error = self.opt_x[[0,1,2,5,6,7,8,11], i+1] - self.y_ref[:, i]
+            # state_error = self.opt_x[[6,7,8,11], i+1] - self.y_ref[:, i]
             obj += casadi.mtimes([state_error.T, self.Q, state_error])
             # Penalize the control effort.
             obj += gamma * casadi.mtimes([self.opt_u[:, i].T, self.R, self.opt_u[:, i]])
@@ -137,6 +147,13 @@ class CtrlCasadi(BlimpController):
             self.traj_z[n:n+self.N],
             self.traj_psi[n:n+self.N],
         ))
+
+        # traj_ref = np.vstack((
+        #     self.traj_x[n:n+self.N],
+        #     self.traj_y[n:n+self.N],
+        #     self.traj_z[n:n+self.N],
+        #     self.traj_psi[n:n+self.N]
+        # ))
 
         print('[INFO] made it to set_value for the reference trajectory')
         self.opti.set_value(self.y_ref, traj_ref)

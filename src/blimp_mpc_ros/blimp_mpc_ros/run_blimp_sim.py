@@ -105,7 +105,7 @@ def main(args=sys.argv):
     }
         
     try:
-        dT = 0.01
+        dT = 0.03 # 0.01
         ctrl_dT = dT #0.05
         ctrl_period = int(ctrl_dT / dT)
         ctrl_ctr = 0
@@ -123,9 +123,9 @@ def main(args=sys.argv):
         
         ## SIMULATION
         sim = Simulator(dT)
-        sim.set_var('x', 0.4)
-        sim.set_var('y', -.5)
-        # sim.set_var('z', -0.5)
+        sim.set_var('x', 0.8)
+        sim.set_var('y', 0.)
+        sim.set_var('z', -1.3)
 
 
         plotter = BlimpPlotter()
@@ -135,8 +135,8 @@ def main(args=sys.argv):
         
         ctrl = Controller(ctrl_dT)
         ctrl.init_sim(sim)
-        # sim.set_var('x', ctrl.traj_x[0])
-        # sim.set_var('y', ctrl.traj_y[0])
+        sim.set_var('x', ctrl.traj_x[0])
+        sim.set_var('y', ctrl.traj_y[0])
         sim.set_var('z', ctrl.traj_z[0])
         sim.set_var('psi', ctrl.traj_psi[0])
 
