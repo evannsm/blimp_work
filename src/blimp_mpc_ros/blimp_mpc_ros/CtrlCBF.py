@@ -16,9 +16,14 @@ class CtrlCBF(BlimpController):
         self.phi_limit = 10 * np.pi/180
         self.psi_limit = 5* np.pi/180
         self.use_psi_cbf = False
-        
+
+        # Original parameters for position information only.
         self.k1 = np.array([0.32, 0.32, 5, 0.3]).reshape((4,1))
         self.k2 = np.array([0.32, 0.32, 5, 0.3]).reshape((4,1))
+
+        # Better parameters if velocity information is given.
+        # self.k1 = np.array([0.6, 0.6, 5, 0.3]).reshape((4,1))
+        # self.k2 = np.array([0.1, 0.1, 2, 0.01]).reshape((4,1))
 
         self.gamma_th = 10
         self.gamma_ph = 10
@@ -111,7 +116,7 @@ class CtrlCBF(BlimpController):
         e1 = zeta1 - yd
         e2 = zeta2 - yd_dot
         
-        q = -self.k1 * e1.reshape((4,1)) - self.k2 * e2.reshape((4,1)) + yd_ddot
+        q = -self.k1 * e1.reshape((4,1)) - self.k2 * e2.reshape((4,1))# + yd_ddot
         
         k_x = Binv @ (q - A)
 

@@ -53,13 +53,13 @@ class CtrlCasadi(BlimpController):
             [0, 0, 0, 0, 0, 0, 0, 10/(max_psi_err**2)],       # psi
         ])
 
-        # # Re-define in a 4x4 matrix, using only the position and yaw
+        # Re-define in a 4x4 matrix, using only the position and yaw
         # self.Q = np.array([
         #     [1/(max_x_err**2), 0, 0, 0],       # x
         #     [0, 1/(max_y_err**2), 0, 0],       # y
         #     [0, 0, 1/(max_z_err**2), 0],       # z
         #     [0, 0, 0, 10/(max_psi_err**2)],       # psi
-        # ])
+        # ]) * 100
         
         max_fx = 0.035
         max_fy = 0.035
@@ -71,10 +71,10 @@ class CtrlCasadi(BlimpController):
         	[0, 1/(max_fy**2), 0, 0],
         	[0, 0, 1/(max_fz**2), 0],
         	[0, 0, 0, 1/(max_tz**2)]
-        ]) * 1
+        ]) * 40
 
         # Setup controller.
-        N = 14 # MPC horizon length
+        N = 13 # MPC horizon length
 
         self.opti = casadi.Opti()
         self.opt_u = self.opti.variable(4, N)
@@ -86,7 +86,7 @@ class CtrlCasadi(BlimpController):
         self.opt_x_t = self.opti.parameter(12,) # Initialization
 
         opts_setting = {
-            'ipopt.max_iter': 2000
+            'ipopt.max_iter': 1000
         }
         
         self.opti.solver('ipopt', opts_setting)
@@ -103,8 +103,10 @@ class CtrlCasadi(BlimpController):
         obj = 0
         gamma = .1 # Weighting on the control effort.
         for i in range(N):
-            state_error = self.opt_x[[0,1,2,5,6,7,8,11], i+1] - self.y_ref[:, i]
-            # state_error = self.opt_x[[6,7,8,11], i+1] - self.y_ref[:, i]
+            state_error = self.opt_x[[0,1,2,5,6,7,8,11], i] - self.y_ref[:, i]
+
+            # The error is x[t] - y[t], not x[t+1] - y[t].
+            # state_error = self.opt_x[[6,7,8,11], i] - self.y_ref[:, i]
             obj += casadi.mtimes([state_error.T, self.Q, state_error])
             # Penalize the control effort.
             obj += gamma * casadi.mtimes([self.opt_u[:, i].T, self.R, self.opt_u[:, i]])
@@ -176,13 +178,13 @@ class CtrlCasadi(BlimpController):
 
         # set_initial provides an initial guess, NOT an initial condition!
         # self.opti.set_initial(self.opt_x, x_t)
-        self.opti.set_value(self.opt_x_t, x_t.reshape((1,12)))
+        self.opti.set_value(self.opt_x_t, x_t.reshape((12,))) # (1,12)
 
         solution = self.opti.solve()
 
         u = solution.value(self.opt_u[:, 0])
-        print(u)
-        x_predicted = solution.value(self.opt_x)
+        # print(u)
+        # x_predicted = solution.value(self.opt_x)
 
         sim.end_timer()
 

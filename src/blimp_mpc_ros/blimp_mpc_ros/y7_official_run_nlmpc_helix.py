@@ -15,7 +15,7 @@ def main(args=sys.argv):
     try:
         rclpy.init(args=args)
 
-        dT = 0.033# 0.025
+        dT = 0.04# 0.025
         controller = HardwareCasadiHelix(dT)
         node = BlimpMPCNode(controller, args[1])
         

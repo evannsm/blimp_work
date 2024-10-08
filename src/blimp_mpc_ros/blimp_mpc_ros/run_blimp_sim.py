@@ -105,7 +105,7 @@ def main(args=sys.argv):
     }
         
     try:
-        dT = 0.03 # 0.01
+        dT = 0.033 # 0.01
         ctrl_dT = dT #0.05
         ctrl_period = int(ctrl_dT / dT)
         ctrl_ctr = 0

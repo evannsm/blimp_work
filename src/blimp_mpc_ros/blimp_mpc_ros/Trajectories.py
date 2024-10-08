@@ -28,53 +28,51 @@ class Trajectories:
         print(f"{a =}, {b =}, {dot_product =}, {cross_product_z =}. {angle =}")
 
         
-        # #do it without settle time
-        traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
-        traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
-        traj_z = np.array([(desired_height) * np.ones(len(tracking_time))]).reshape(-1)
-        
-        
-        traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # # #do it without settle time
+        # traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
+        # traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
+        # traj_z = np.array([(desired_height) * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
 
 
-        # # Define functions for traj_x, traj_y, traj_z, and traj_psi
-        # def traj_x_func(t):
-        #     return center_x + R * jnp.cos(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+        # Define functions for traj_x, traj_y, traj_z, and traj_psi
+        def traj_x_func(t):
+            return center_x + R * jnp.cos(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
 
-        # def traj_y_func(t):
-        #     return center_y + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+        def traj_y_func(t):
+            return center_y + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
 
-        # def traj_z_func(t):
-        #     return desired_height
+        def traj_z_func(t):
+            return desired_height
 
-        # def traj_psi_func(t):
-        #     return 0.0
+        def traj_psi_func(t):
+            return 0.0
 
-        # # Compute the trajectories
-        # traj_x = jax.vmap(traj_x_func)(tracking_time)
-        # traj_y = jax.vmap(traj_y_func)(tracking_time)
-        # traj_z = jax.vmap(traj_z_func)(tracking_time)
-        # traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+        # Compute the trajectories
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
 
         # Compute the first derivatives
-        # traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
-        # traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
-        # traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)  # Constant, derivative will be 0
-        # traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)  # Constant, derivative will be 0
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
 
         # Compute the second derivatives
-        # traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
-        # traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
-        # traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)  # Second derivative will be 0
-        # traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)  # Second derivative will be 0
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
@@ -113,20 +111,50 @@ class Trajectories:
         angle *= np.sign(cross_product_z)    # Multiply by the sign to get the correct angle
         print(f"{a =}, {b =}, {dot_product =}, {cross_product_z =}. {angle =}")
 
-        #do it without settle time
-        traj_x = np.array([center_x + R * np.cos(2 * np.pi * tracking_time / (tScale * TRACKING_TIME) + angle)]).reshape(-1) # Calculate the trajectory with phase offset
-        traj_y = np.array([y0 * np.ones(len(tracking_time))]).reshape(-1)
-        traj_z = np.array([center_z + R * np.sin(2 * np.pi * tracking_time / (tScale * TRACKING_TIME) + angle)]).reshape(-1) # Calculate the trajectory with phase offset
-        traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # #do it without settle time
+        # traj_x = np.array([center_x + R * np.cos(2 * np.pi * tracking_time / (tScale * TRACKING_TIME) + angle)]).reshape(-1) # Calculate the trajectory with phase offset
+        # traj_y = np.array([y0 * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_z = np.array([center_z + R * np.sin(2 * np.pi * tracking_time / (tScale * TRACKING_TIME) + angle)]).reshape(-1) # Calculate the trajectory with phase offset
+        # traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
 
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # Define functions for traj_x, traj_y, traj_z, and traj_psi
+        def traj_x_func(t):
+            return center_x + R * jnp.cos(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_y_func(t):
+            return y0  # y0 is constant over time
+
+        def traj_z_func(t):
+            return center_z + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_psi_func(t):
+            return 0.0  # Constant yaw
+
+        # Compute the trajectories
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)  # Constant, derivative will be 0
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
+
+        # Compute the second derivatives
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)  # Second derivative will be 0
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
@@ -157,19 +185,51 @@ class Trajectories:
         desired_height = -1.1
 
 
-        #do it without settle time
-        traj_x = np.concatenate([x0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
-        traj_y = np.concatenate([y0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
-        traj_z = np.array([(desired_height)* np.ones(len(tracking_time))]).reshape(-1)
-        traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # #do it without settle time
+        # traj_x = np.concatenate([x0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        # traj_y = np.concatenate([y0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        # traj_z = np.array([(desired_height)* np.ones(len(tracking_time))]).reshape(-1)
+        # traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
+
+
+        # Define functions for traj_x, traj_y, traj_z, and traj_psi
+        def traj_x_func(t):
+            return x0 + R * jnp.sin(2 * 2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_y_func(t):
+            return y0 + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_z_func(t):
+            return desired_height  # Constant desired height
+
+        def traj_psi_func(t):
+            return 0.0  # Constant yaw
+
+        # Compute the trajectories
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)  # Constant, derivative will be 0
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
+
+        # Compute the second derivatives
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)  # Second derivative will be 0
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
@@ -199,18 +259,50 @@ class Trajectories:
         center_z = -1.0
 
         #do it without settle time
-        traj_y = np.concatenate([y0 * np.ones(len(tracking_time))]).reshape(-1)
-        traj_x = np.concatenate([x0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
-        traj_z = np.concatenate([z0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
-        traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # traj_y = np.concatenate([y0 * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x = np.concatenate([x0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        # traj_z = np.concatenate([z0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        # traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
+
+
+        # Define functions for traj_y, traj_x, traj_z, and traj_psi
+        def traj_y_func(t):
+            return y0  # y0 is constant over time
+
+        def traj_x_func(t):
+            return x0 + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_z_func(t):
+            return z0 + R * jnp.sin(2 * 2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_psi_func(t):
+            return 0.0  # Constant yaw
+
+        # Compute the trajectories
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)  # Constant, derivative will be 0
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
+
+        # Compute the second derivatives
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)  # Second derivative will be 0
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
@@ -240,18 +332,51 @@ class Trajectories:
         center_z = -0.8
 
 
-        traj_y = np.concatenate([y0 * np.ones(len(tracking_time))]).reshape(-1)
-        traj_x = np.concatenate([x0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
-        traj_z = np.concatenate([z0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
-        traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # traj_y = np.concatenate([y0 * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x = np.concatenate([x0 + R * np.sin(2*2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        # traj_z = np.concatenate([z0 + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)
+        # traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
+
+
+        # Define functions for traj_y, traj_x, traj_z, and traj_psi
+        def traj_y_func(t):
+            return y0  # y0 is constant over time
+
+        def traj_x_func(t):
+            return x0 + R * jnp.sin(2 * 2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_z_func(t):
+            return z0 + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_psi_func(t):
+            return 0.0  # Constant yaw
+
+        # Compute the trajectories
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)  # Constant, derivative will be 0
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
+
+        # Compute the second derivatives
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)  # Second derivative will be 0
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
+
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
@@ -295,20 +420,50 @@ class Trajectories:
 
         
         #do it without settle time
-        traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
-        traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
-        traj_z = np.array([(desired_height) * np.ones(len(tracking_time))]).reshape(-1)
-        traj_psi = np.array([2 * np.pi * tracking_time * yaw_rotations_per_trajectory / TRACKING_TIME]).reshape(-1)
-        # print(f"{traj_psi[-1]=}")
+        # traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
+        # traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
+        # traj_z = np.array([(desired_height) * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_psi = np.array([2 * np.pi * tracking_time * yaw_rotations_per_trajectory / TRACKING_TIME]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
 
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # Define functions for traj_x, traj_y, traj_z, and traj_psi
+        def traj_x_func(t):
+            return center_x + R * jnp.cos(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_y_func(t):
+            return center_y + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_z_func(t):
+            return desired_height  # Constant desired height
+
+        def traj_psi_func(t):
+            return 2 * jnp.pi * t * yaw_rotations_per_trajectory / TRACKING_TIME
+
+        # Compute the trajectories
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)  # Constant, derivative will be 0
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)
+
+        # Compute the second derivatives
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)  # Second derivative will be 0
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)
+
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
@@ -350,19 +505,51 @@ class Trajectories:
 
         
         # #do it without settle time
-        traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
-        traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
-        traj_z = np.array([z0 + height_variance * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)    # Calculate trajectory with the phase offset
-        traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
+        # traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
+        # traj_z = np.array([z0 + height_variance * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)    # Calculate trajectory with the phase offset
+        # traj_psi = np.array([0. * np.ones(len(tracking_time))]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
 
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # Define functions for traj_x, traj_y, traj_z, and traj_psi
+        def traj_x_func(t):
+            return center_x + R * jnp.cos(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_y_func(t):
+            return center_y + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_z_func(t):
+            return z0 + height_variance * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_psi_func(t):
+            return 0.0  # Constant yaw
+
+        # Compute the trajectories
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)  # Constant, derivative will be 0
+
+        # Compute the second derivatives
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)  # Second derivative will be 0
+
+
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
@@ -405,19 +592,50 @@ class Trajectories:
 
         
         # #do it without settle time
-        traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
-        traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
-        traj_z = np.array([z0 + height_variance * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)    # Calculate trajectory with the phase offset
-        traj_psi = np.array([2 * np.pi * tracking_time * yaw_rotations_per_trajectory / TRACKING_TIME]).reshape(-1)
+        # traj_x = np.array([center_x + R * np.cos(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)   # Calculate trajectory with the phase offset 
+        # traj_y = np.array([center_y + R * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME) + angle)]).reshape(-1)    # Calculate trajectory with the phase offset
+        # traj_z = np.array([z0 + height_variance * np.sin(2*np.pi*tracking_time/(tScale*TRACKING_TIME))]).reshape(-1)    # Calculate trajectory with the phase offset
+        # traj_psi = np.array([2 * np.pi * tracking_time * yaw_rotations_per_trajectory / TRACKING_TIME]).reshape(-1)
+        # traj_x_dot = np.zeros(len(tracking_time))
+        # traj_y_dot = np.zeros(len(tracking_time))
+        # traj_z_dot = np.zeros(len(tracking_time))
+        # traj_psi_dot = np.zeros(len(tracking_time))
+        # traj_x_ddot = np.zeros(len(tracking_time))
+        # traj_y_ddot = np.zeros(len(tracking_time))
+        # traj_z_ddot = np.zeros(len(tracking_time))
+        # traj_psi_ddot = np.zeros(len(tracking_time))
 
-        traj_x_dot = np.zeros(len(tracking_time))
-        traj_y_dot = np.zeros(len(tracking_time))
-        traj_z_dot = np.zeros(len(tracking_time))
-        traj_psi_dot = np.zeros(len(tracking_time))
-        traj_x_ddot = np.zeros(len(tracking_time))
-        traj_y_ddot = np.zeros(len(tracking_time))
-        traj_z_ddot = np.zeros(len(tracking_time))
-        traj_psi_ddot = np.zeros(len(tracking_time))
+        # Define functions for traj_x, traj_y, traj_z, and traj_psi
+        def traj_x_func(t):
+            return center_x + R * jnp.cos(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_y_func(t):
+            return center_y + R * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME) + angle)
+
+        def traj_z_func(t):
+            return z0 + height_variance * jnp.sin(2 * jnp.pi * t / (tScale * TRACKING_TIME))
+
+        def traj_psi_func(t):
+            return 2 * jnp.pi * t * yaw_rotations_per_trajectory / TRACKING_TIME
+
+        # Compute the trajectories
+        traj_x = jax.vmap(traj_x_func)(tracking_time)
+        traj_y = jax.vmap(traj_y_func)(tracking_time)
+        traj_z = jax.vmap(traj_z_func)(tracking_time)
+        traj_psi = jax.vmap(traj_psi_func)(tracking_time)
+
+        # Compute the first derivatives
+        traj_x_dot = jax.vmap(jax.grad(traj_x_func))(tracking_time)
+        traj_y_dot = jax.vmap(jax.grad(traj_y_func))(tracking_time)
+        traj_z_dot = jax.vmap(jax.grad(traj_z_func))(tracking_time)
+        traj_psi_dot = jax.vmap(jax.grad(traj_psi_func))(tracking_time)
+
+        # Compute the second derivatives
+        traj_x_ddot = jax.vmap(jax.grad(jax.grad(traj_x_func)))(tracking_time)
+        traj_y_ddot = jax.vmap(jax.grad(jax.grad(traj_y_func)))(tracking_time)
+        traj_z_ddot = jax.vmap(jax.grad(jax.grad(traj_z_func)))(tracking_time)
+        traj_psi_ddot = jax.vmap(jax.grad(jax.grad(traj_psi_func)))(tracking_time)
+        
 
         # do it with settling too
         traj_x = np.concatenate((traj_x, traj_x[-1] * np.ones(len(settle_time))))
