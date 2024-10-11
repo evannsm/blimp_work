@@ -244,7 +244,7 @@ class CtrlWardi(BlimpController):
         yaw = curr_yaw + cumm_change_yaw;
 
         wx = curr_wx + cumm_change_wx
-        wy = curr_wy + cumm_change_wy
+        wy = curr_wy + cumm_change_wyHardwareWardiCircleHorzSpin
         wz = curr_wz + cumm_change_wz
 
         eta_bn_n = np.array([x, y, z, roll, pitch, yaw]).reshape((6,1))
