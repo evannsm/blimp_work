@@ -1,1 +1,0 @@
-/home/lbaird38/evanns_blimp/src/mocap_msgs/msg/Marker.msg

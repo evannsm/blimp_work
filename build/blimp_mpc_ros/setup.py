@@ -1,1 +1,0 @@
-/home/lbaird38/evanns_blimp/src/blimp_mpc_ros/setup.py

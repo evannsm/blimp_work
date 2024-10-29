@@ -1,4 +1,5 @@
-from . BlimpSim import BlimpSim
+# from . BlimpSim import BlimpSim
+from gtmab_model.BlimpSim import BlimpSim
 from . BlimpLogger import BlimpLogger
 
 import numpy as np

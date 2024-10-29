@@ -1,1 +1,0 @@
-/home/lbaird38/evanns_blimp/build/mocap_msgs/ament_cmake_environment_hooks/local_setup.bash

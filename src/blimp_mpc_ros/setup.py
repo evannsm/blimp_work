@@ -44,6 +44,8 @@ setup(
 
             'run_blimp_sim = blimp_mpc_ros.run_blimp_sim:main',
 
+            'run_rta_sim = blimp_mpc_ros.run_rta_sim:main',
+
 
             'run_wardi_circle_horz = blimp_mpc_ros.x1_official_run_wardi_circle_horz:main',
             'run_wardi_circle_vert = blimp_mpc_ros.x2_official_run_wardi_circle_vert:main',

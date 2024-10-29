@@ -1,5 +1,7 @@
 build
+build/*
 install
 log
 .vscode
 *.log
+__pycache__
