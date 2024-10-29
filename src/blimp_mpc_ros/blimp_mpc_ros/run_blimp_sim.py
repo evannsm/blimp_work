@@ -53,7 +53,9 @@ import time
 
 import rclpy
 from rclpy.node import Node
-
+from pyJoules.handler.csv_handler import CSVHandler
+from pyJoules.device.rapl_device import RaplPackageDomain, RaplCoreDomain
+from pyJoules.energy_meter import EnergyContext
 
 def main(args=sys.argv):
     if len(args) < 3:
@@ -105,6 +107,10 @@ def main(args=sys.argv):
     }
         
     try:
+        pyjoules_on = bool(int((input("Do you want to log energy consumption? (0/1): "))))
+        if pyjoules_on:
+            csv_handler = CSVHandler('z_fbl_CHS_energy.log')
+
         dT = 0.033 # 0.01
         ctrl_dT = dT #0.05
         ctrl_period = int(ctrl_dT / dT)
@@ -153,7 +159,12 @@ def main(args=sys.argv):
             ctrl_ctr += 1
             if ctrl_ctr > ctrl_period:
                 print("Getting control action")
-                u = ctrl.get_ctrl_action(sim)
+                if pyjoules_on:
+                    with EnergyContext(handler=csv_handler, domains=[RaplPackageDomain(0), RaplCoreDomain(0)]):
+                        u = ctrl.get_ctrl_action(sim)
+                else:
+                    u = ctrl.get_ctrl_action(sim)
+
                 # print(u.shape) 
                 ctrl_ctr = 0
             
@@ -176,6 +187,7 @@ def main(args=sys.argv):
         print("Logging to logs/" + args[2])
         logger = BlimpLogger(args[2])
         logger.log(sim, ctrl)
-
+        if pyjoules_on:
+            csv_handler.save_data()
 if __name__ == '__main__':
     main()

@@ -1,0 +1,9 @@
+source;share/blimp_mpc_ros/hook/pythonpath.ps1
+source;share/blimp_mpc_ros/hook/pythonpath.dsv
+source;share/blimp_mpc_ros/hook/pythonpath.sh
+source;share/blimp_mpc_ros/hook/ament_prefix_path.ps1
+source;share/blimp_mpc_ros/hook/ament_prefix_path.dsv
+source;share/blimp_mpc_ros/hook/ament_prefix_path.sh
+source;../../build/blimp_mpc_ros/share/blimp_mpc_ros/hook/pythonpath_develop.ps1
+source;../../build/blimp_mpc_ros/share/blimp_mpc_ros/hook/pythonpath_develop.dsv
+source;../../build/blimp_mpc_ros/share/blimp_mpc_ros/hook/pythonpath_develop.sh

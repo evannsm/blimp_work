@@ -1,0 +1,11 @@
+<launch>
+  <node name="blimp_node_2" pkg="blimp_node_2" exec="blimp_script"> <!-- blimp_node_2 -->
+    <param name="serial_port" value="/dev/ttyUSB0"/>
+    <param name="serial_baud" value="921600"/>
+    <param name="blimp_firmware_id" value="255"/>
+
+    <param name="num_blimps" value="1"/>
+    <param name="host_ip" value="192.168.1.37"/>
+    <param name="blimp_ip" value="192.168.1.100" />
+  </node>
+</launch>

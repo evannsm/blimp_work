@@ -1,0 +1,7 @@
+[1.380s] Invoking command in '/home/factslabegmc/final_blimp_ws/build/blimp_node_2': PYTHONPATH=/home/factslabegmc/final_blimp_ws/build/blimp_node_2/prefix_override:/home/factslabegmc/final_blimp_ws/install/blimp_node_2/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/factslabegmc/final_blimp_ws/build/blimp_node_2/build --no-deps install_data
+[1.561s] running develop
+[1.675s] running egg_info
+[1.678s] writing manifest file 'blimp_node_2.egg-info/SOURCES.txt'
+[1.704s] running build_ext
+[1.705s] running install_data
+[1.720s] Invoked command in '/home/factslabegmc/final_blimp_ws/build/blimp_node_2' returned '0': PYTHONPATH=/home/factslabegmc/final_blimp_ws/build/blimp_node_2/prefix_override:/home/factslabegmc/final_blimp_ws/install/blimp_node_2/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/factslabegmc/final_blimp_ws/build/blimp_node_2/build --no-deps install_data

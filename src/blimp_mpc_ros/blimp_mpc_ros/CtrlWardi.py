@@ -8,6 +8,9 @@ from . utilities import *
 import control
 import sys
 import math as m
+import jax.numpy as jnp
+
+from . blimp_jax import *
 
 class CtrlWardi(BlimpController):
 
@@ -31,7 +34,12 @@ class CtrlWardi(BlimpController):
         C = np.zeros([4,12])
         C[0,6],C[1,7], C[2,8], C[3,11] = 1,1,1,1
         self.C = C
-        self.T_lookahead = 0.8
+
+        C = np.zeros([4,12])
+        C[0,0],C[1,1], C[2,2], C[3,8] = 1,1,1,1
+        self.Cjax = C
+
+        self.T_lookahead = 1.2
 
         self.cbf_history =  np.zeros((1,4))
 
@@ -244,7 +252,7 @@ class CtrlWardi(BlimpController):
         yaw = curr_yaw + cumm_change_yaw;
 
         wx = curr_wx + cumm_change_wx
-        wy = curr_wy + cumm_change_wyHardwareWardiCircleHorzSpin
+        wy = curr_wy + cumm_change_wy
         wz = curr_wz + cumm_change_wz
 
         eta_bn_n = np.array([x, y, z, roll, pitch, yaw]).reshape((6,1))
@@ -274,6 +282,8 @@ class CtrlWardi(BlimpController):
         curr_wx = sim.get_var('wx')
         curr_wy = sim.get_var('wy')
         curr_wz = sim.get_var('wz')
+
+
 
         tau_B = np.array([u[0][0],
                         u[1][0],
@@ -344,7 +354,7 @@ class CtrlWardi(BlimpController):
             g_CB = -np.block([[np.zeros((3, 1))],
                             [np.reshape(np.cross(r_gb__b, fg_B), (3, 1))]])
 
-        # Final state values after integration
+        # Final state values a68.91613303fter integration
         eta_bn_n = np.array([x, y, z, roll, pitch, yaw]).reshape((6,1))
         nu_bn_b = np.array([vx, vy, vz, wx, wy, wz]).reshape((6,1))
 
@@ -352,11 +362,52 @@ class CtrlWardi(BlimpController):
         
         return nonlin_pred
 
+
     
+    def get_jax_pred(self, sim):
+        print(f"Using Jax for prediction and inverse jac")
+        curr_x = sim.get_var('x')
+        curr_y = sim.get_var('y')
+        curr_z = sim.get_var('z')
+        curr_vx = sim.get_var('vx')
+        curr_vy = sim.get_var('vy')
+        curr_vz = sim.get_var('vz')
+        curr_roll = sim.get_var('phi')
+        curr_pitch = sim.get_var('theta')
+        curr_yaw = sim.get_var('psi')
+        curr_wx = sim.get_var('wx')
+        curr_wy = sim.get_var('wy')
+        curr_wz = sim.get_var('wz')
+
+        STATE = jnp.array([curr_x, curr_y, curr_z, curr_vx, curr_vy, curr_vz, curr_roll, curr_pitch, curr_yaw, curr_wx, curr_wy, curr_wz])
+        # u = self.last_input
+        INPUT = jnp.array(self.last_input)
+        # print(f"input.shape: \n{INPUT.shape}")
+
+        
+        integration_step = 0.05
+        integrations_int = int(self.T_lookahead / integration_step)
+        print(f"{integrations_int = }")
+
+        outputs = predict_outputs(STATE, INPUT, self.T_lookahead, self.Cjax, integration_step, integrations_int)
+        adjusted_invjac, cond_number = compute_adjusted_invjac(STATE, INPUT, self.T_lookahead, self.Cjax, integration_step, integrations_int)
+        print(f"cond_number: \n{cond_number}")
+
+
+        outputs = np.array(outputs).reshape(-1, 1)
+        adjusted_invjac = np.array(adjusted_invjac)
+        self.jac_inv = adjusted_invjac
+        return outputs
+
+
+
+
+
     def get_prediction(self, sim):
 
         u = self.last_input
         pred = self.euler_integration(u, sim)
+        # print(f"{pred = }")
         outputs = self.C @ pred
 
         epsilon = 1e-5
@@ -418,7 +469,17 @@ class CtrlWardi(BlimpController):
             return None
 
         t0 = time.time()
-        pred = self.get_prediction(sim)
+        # pred = self.get_prediction(sim)
+        pred = self.get_jax_pred(sim)
+
+        print(f"Pred: {pred}")
+        # print(f"Pred2: {pred2}")
+        # print(f"{self.jac_inv = }")
+        # print(f"{self.jac_inv2 = }")
+
+        # pred = pred2
+        # self.jac_inv = self.jac_inv2
+
         pred[3][0] = self.normalize_angle(pred[3][0])
         error = self.get_tracking_error(sim, n, pred)
         NR = self.jac_inv @ error # calculates newton-raphson control input without speed-up parameter
@@ -521,7 +582,7 @@ class CtrlWardi(BlimpController):
             v = np.array([[v_fx, v_fy, v_fz, v_tz]]).T
         else:
             v = np.array([[0., 0., 0. ,0.]]).T # placeholder for if we apply Integral CBFs to the system 
-        print(f"{'Using CBFs' if self.use_CBFs else 'Not using CBFs:'}\nv: {v}")
+        # print(f"{'Using CBFs' if self.use_CBFs else 'Not using CBFs:'}\nv: {v}")
         self.update_cbf_history(v)
         
         udot = phi + v # placeholder for if we apply Integral CBFs to the system

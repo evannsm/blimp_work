@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/factslabegmc/final_blimp_ws/build/mocap_msgs/rosidl_generator_py/mocap_msgs/libmocap_msgs__python.so" "TARGETS" "mocap_msgs__python" "ARCHIVE_DESTINATION" "lib" "LIBRARY_DESTINATION" "lib" "RUNTIME_DESTINATION" "bin")

@@ -1,0 +1,10 @@
+{
+  "package_name": "mocap_msgs",
+  "non_idl_tuples": [
+    "/home/factslabegmc/final_blimp_ws/src/mocap_msgs:msg/Marker.msg",
+    "/home/factslabegmc/final_blimp_ws/src/mocap_msgs:msg/Markers.msg",
+    "/home/factslabegmc/final_blimp_ws/src/mocap_msgs:msg/ImusInfo.msg",
+    "/home/factslabegmc/final_blimp_ws/src/mocap_msgs:msg/RigidBody.msg",
+    "/home/factslabegmc/final_blimp_ws/src/mocap_msgs:msg/RigidBodies.msg"
+  ]
+}

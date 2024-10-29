@@ -1,0 +1,151 @@
+[0.761s] Invoking command in '/home/factslabegmc/final_blimp_ws/build/mocap_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --build /home/factslabegmc/final_blimp_ws/build/mocap_msgs -- -j20 -l20
+[0.805s] [  1%] Built target mocap_msgs__cpp
+[0.813s] [ 12%] Built target mocap_msgs__rosidl_generator_c
+[0.830s] [ 23%] Built target mocap_msgs__rosidl_typesupport_introspection_cpp
+[0.832s] [ 34%] Built target mocap_msgs__rosidl_typesupport_fastrtps_cpp
+[0.832s] [ 46%] Built target mocap_msgs__rosidl_typesupport_c
+[0.832s] [ 57%] Built target mocap_msgs__rosidl_typesupport_cpp
+[0.835s] [ 68%] Built target mocap_msgs__rosidl_typesupport_introspection_c
+[0.853s] [ 79%] Built target mocap_msgs__rosidl_typesupport_fastrtps_c
+[0.870s] [ 79%] Built target mocap_msgs
+[0.890s] [ 80%] Built target mocap_msgs__py
+[0.912s] [ 90%] Built target mocap_msgs__python
+[0.933s] [ 95%] Built target mocap_msgs__rosidl_typesupport_c__pyext
+[0.933s] [ 96%] Built target mocap_msgs__rosidl_typesupport_fastrtps_c__pyext
+[0.934s] [100%] Built target mocap_msgs__rosidl_typesupport_introspection_c__pyext
+[0.945s] Invoked command in '/home/factslabegmc/final_blimp_ws/build/mocap_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --build /home/factslabegmc/final_blimp_ws/build/mocap_msgs -- -j20 -l20
+[1.036s] Invoking command in '/home/factslabegmc/final_blimp_ws/build/mocap_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --install /home/factslabegmc/final_blimp_ws/build/mocap_msgs
+[1.044s] -- Install configuration: ""
+[1.044s] -- Execute custom install script
+[1.044s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/ament_index/resource_index/rosidl_interfaces/mocap_msgs
+[1.045s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__functions.h
+[1.045s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__struct.h
+[1.045s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__type_support.h
+[1.045s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__functions.h
+[1.045s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__struct.h
+[1.045s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__type_support.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__functions.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__struct.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__type_support.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__functions.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__struct.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__type_support.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__functions.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__struct.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__type_support.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/imus_info.h
+[1.046s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/marker.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/markers.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rigid_bodies.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rigid_body.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rosidl_generator_c__visibility_control.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/library_path.sh
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/library_path.dsv
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__rosidl_typesupport_fastrtps_c.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__rosidl_typesupport_fastrtps_c.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__rosidl_typesupport_fastrtps_c.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__rosidl_typesupport_fastrtps_c.h
+[1.047s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__rosidl_typesupport_fastrtps_c.h
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__rosidl_typesupport_fastrtps_c.so
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__rosidl_typesupport_fastrtps_cpp.hpp
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__rosidl_typesupport_fastrtps_cpp.hpp
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__rosidl_typesupport_fastrtps_cpp.hpp
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__rosidl_typesupport_fastrtps_cpp.hpp
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__rosidl_typesupport_fastrtps_cpp.hpp
+[1.048s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[1.049s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__rosidl_typesupport_fastrtps_cpp.so
+[1.049s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__rosidl_typesupport_introspection_c.h
+[1.049s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__rosidl_typesupport_introspection_c.h
+[1.049s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__rosidl_typesupport_introspection_c.h
+[1.049s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__rosidl_typesupport_introspection_c.h
+[1.049s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__rosidl_typesupport_introspection_c.h
+[1.049s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__builder.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__struct.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__traits.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__builder.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__struct.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__traits.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__builder.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__struct.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__traits.hpp
+[1.050s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__builder.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__struct.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__traits.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__builder.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__struct.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__traits.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/imus_info.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/marker.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/markers.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rigid_bodies.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/rigid_body.hpp
+[1.051s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/imus_info__rosidl_typesupport_introspection_cpp.hpp
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/marker__rosidl_typesupport_introspection_cpp.hpp
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/markers__rosidl_typesupport_introspection_cpp.hpp
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_bodies__rosidl_typesupport_introspection_cpp.hpp
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/include/mocap_msgs/msg/detail/rigid_body__rosidl_typesupport_introspection_cpp.hpp
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/pythonpath.sh
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/pythonpath.dsv
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/__init__.py
+[1.052s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/msg/__init__.py
+[1.053s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/msg/_imus_info.py
+[1.053s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/msg/_marker.py
+[1.053s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/msg/_markers.py
+[1.053s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/msg/_rigid_bodies.py
+[1.053s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/msg/_rigid_body.py
+[1.053s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/mocap_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so
+[1.053s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/mocap_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so
+[1.054s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/python3.8/site-packages/mocap_msgs/mocap_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so
+[1.054s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__python.so
+[1.054s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/Marker.idl
+[1.054s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/Markers.idl
+[1.054s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/ImusInfo.idl
+[1.054s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/RigidBody.idl
+[1.054s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/RigidBodies.idl
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/Marker.msg
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/Markers.msg
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/ImusInfo.msg
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/RigidBody.msg
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/msg/RigidBodies.msg
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/mocap_bridge_mapping_rule.yaml
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/ament_index/resource_index/package_run_dependencies/mocap_msgs
+[1.055s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/ament_index/resource_index/parent_prefix_path/mocap_msgs
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/ament_prefix_path.sh
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/ament_prefix_path.dsv
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/path.sh
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/environment/path.dsv
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/local_setup.bash
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/local_setup.sh
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/local_setup.zsh
+[1.056s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/local_setup.dsv
+[1.057s] -- Symlinking: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/package.dsv
+[1.065s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/ament_index/resource_index/packages/mocap_msgs
+[1.065s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/rosidl_cmake-extras.cmake
+[1.065s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[1.065s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[1.065s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[1.065s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[1.065s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[1.066s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[1.066s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgsConfig.cmake
+[1.066s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgsConfig-version.cmake
+[1.066s] -- Up-to-date symlink: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/package.xml
+[1.066s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__rosidl_generator_c.so
+[1.066s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__rosidl_typesupport_introspection_c.so
+[1.067s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__rosidl_typesupport_c.so
+[1.067s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__rosidl_typesupport_introspection_cpp.so
+[1.067s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/lib/libmocap_msgs__rosidl_typesupport_cpp.so
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_generator_cExport.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_generator_cExport-noconfig.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_introspection_cExport.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_cExport.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_generator_cppExport.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_cppExport.cmake
+[1.094s] -- Up-to-date: /home/factslabegmc/final_blimp_ws/install/mocap_msgs/share/mocap_msgs/cmake/mocap_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[1.096s] Invoked command in '/home/factslabegmc/final_blimp_ws/build/mocap_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --install /home/factslabegmc/final_blimp_ws/build/mocap_msgs
