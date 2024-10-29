@@ -5,6 +5,8 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -159,7 +161,7 @@ class Marker(metaclass=Metaclass_Marker):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def id_type(self):
         """Message field 'id_type'."""
         return self._id_type
@@ -174,7 +176,7 @@ class Marker(metaclass=Metaclass_Marker):
                 "The 'id_type' field must be an integer in [-128, 127]"
         self._id_type = value
 
-    @property
+    @builtins.property
     def marker_index(self):
         """Message field 'marker_index'."""
         return self._marker_index
@@ -189,7 +191,7 @@ class Marker(metaclass=Metaclass_Marker):
                 "The 'marker_index' field must be an integer in [-2147483648, 2147483647]"
         self._marker_index = value
 
-    @property
+    @builtins.property
     def marker_name(self):
         """Message field 'marker_name'."""
         return self._marker_name
@@ -202,7 +204,7 @@ class Marker(metaclass=Metaclass_Marker):
                 "The 'marker_name' field must be of type 'str'"
         self._marker_name = value
 
-    @property
+    @builtins.property
     def translation(self):
         """Message field 'translation'."""
         return self._translation

@@ -1,3 +1,0 @@
-[console_scripts]
-blimp_script = blimp_node_2.blimp_node_2:main
-

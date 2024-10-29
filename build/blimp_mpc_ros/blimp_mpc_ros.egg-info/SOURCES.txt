@@ -34,6 +34,9 @@ blimp_mpc_ros/GenerateOptimalTrajectory.py
 blimp_mpc_ros/StateNode.py
 blimp_mpc_ros/Trajectories.py
 blimp_mpc_ros/__init__.py
+blimp_mpc_ros/blimp_jax.py
+blimp_mpc_ros/first.py
+blimp_mpc_ros/quad_jax.py
 blimp_mpc_ros/run_blimp_data.py
 blimp_mpc_ros/run_blimp_sim.py
 blimp_mpc_ros/run_ctrl_cbf_circle_horz.py
@@ -52,6 +55,7 @@ blimp_mpc_ros/run_ctrl_nlmpc_line.py
 blimp_mpc_ros/run_ctrl_nlmpc_rta.py
 blimp_mpc_ros/run_ctrl_nlmpc_triangle.py
 blimp_mpc_ros/run_ctrl_rta_box.py
+blimp_mpc_ros/run_rta_sim.py
 blimp_mpc_ros/utilities.py
 blimp_mpc_ros/x1_official_run_wardi_circle_horz.py
 blimp_mpc_ros/x2_official_run_wardi_circle_vert.py

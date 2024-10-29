@@ -1,8 +1,8 @@
-# Install script for directory: /home/factslabegmc/final_blimp_ws/build/mocap_msgs/mocap_msgs__py
+# Install script for directory: /home/lbaird38/evanns_blimp/build/mocap_msgs/mocap_msgs__py
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/factslabegmc/final_blimp_ws/install/mocap_msgs")
+  set(CMAKE_INSTALL_PREFIX "/home/lbaird38/evanns_blimp/install/mocap_msgs")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -35,5 +35,10 @@ endif()
 # Is this installation the result of a crosscompile?
 if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
+endif()
+
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/usr/bin/objdump")
 endif()
 

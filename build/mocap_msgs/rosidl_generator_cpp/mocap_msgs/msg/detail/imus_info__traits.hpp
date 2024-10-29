@@ -5,18 +5,61 @@
 #ifndef MOCAP_MSGS__MSG__DETAIL__IMUS_INFO__TRAITS_HPP_
 #define MOCAP_MSGS__MSG__DETAIL__IMUS_INFO__TRAITS_HPP_
 
-#include "mocap_msgs/msg/detail/imus_info__struct.hpp"
 #include <stdint.h>
-#include <rosidl_runtime_cpp/traits.hpp>
+
 #include <sstream>
 #include <string>
 #include <type_traits>
 
-namespace rosidl_generator_traits
+#include "mocap_msgs/msg/detail/imus_info__struct.hpp"
+#include "rosidl_runtime_cpp/traits.hpp"
+
+namespace mocap_msgs
 {
 
-inline void to_yaml(
-  const mocap_msgs::msg::ImusInfo & msg,
+namespace msg
+{
+
+inline void to_flow_style_yaml(
+  const ImusInfo & msg,
+  std::ostream & out)
+{
+  out << "{";
+  // member: sensor_ids
+  {
+    if (msg.sensor_ids.size() == 0) {
+      out << "sensor_ids: []";
+    } else {
+      out << "sensor_ids: [";
+      size_t pending_items = msg.sensor_ids.size();
+      for (auto item : msg.sensor_ids) {
+        rosidl_generator_traits::value_to_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
+    out << ", ";
+  }
+
+  // member: battery_level
+  {
+    out << "battery_level: ";
+    rosidl_generator_traits::value_to_yaml(msg.battery_level, out);
+    out << ", ";
+  }
+
+  // member: temperature
+  {
+    out << "temperature: ";
+    rosidl_generator_traits::value_to_yaml(msg.temperature, out);
+  }
+  out << "}";
+}  // NOLINT(readability/fn_size)
+
+inline void to_block_style_yaml(
+  const ImusInfo & msg,
   std::ostream & out, size_t indentation = 0)
 {
   // member: sensor_ids
@@ -33,7 +76,7 @@ inline void to_yaml(
           out << std::string(indentation, ' ');
         }
         out << "- ";
-        value_to_yaml(item, out);
+        rosidl_generator_traits::value_to_yaml(item, out);
         out << "\n";
       }
     }
@@ -45,7 +88,7 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "battery_level: ";
-    value_to_yaml(msg.battery_level, out);
+    rosidl_generator_traits::value_to_yaml(msg.battery_level, out);
     out << "\n";
   }
 
@@ -55,16 +98,41 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "temperature: ";
-    value_to_yaml(msg.temperature, out);
+    rosidl_generator_traits::value_to_yaml(msg.temperature, out);
     out << "\n";
   }
 }  // NOLINT(readability/fn_size)
 
-inline std::string to_yaml(const mocap_msgs::msg::ImusInfo & msg)
+inline std::string to_yaml(const ImusInfo & msg, bool use_flow_style = false)
 {
   std::ostringstream out;
-  to_yaml(msg, out);
+  if (use_flow_style) {
+    to_flow_style_yaml(msg, out);
+  } else {
+    to_block_style_yaml(msg, out);
+  }
   return out.str();
+}
+
+}  // namespace msg
+
+}  // namespace mocap_msgs
+
+namespace rosidl_generator_traits
+{
+
+[[deprecated("use mocap_msgs::msg::to_block_style_yaml() instead")]]
+inline void to_yaml(
+  const mocap_msgs::msg::ImusInfo & msg,
+  std::ostream & out, size_t indentation = 0)
+{
+  mocap_msgs::msg::to_block_style_yaml(msg, out, indentation);
+}
+
+[[deprecated("use mocap_msgs::msg::to_yaml() instead")]]
+inline std::string to_yaml(const mocap_msgs::msg::ImusInfo & msg)
+{
+  return mocap_msgs::msg::to_yaml(msg);
 }
 
 template<>

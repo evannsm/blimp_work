@@ -27,7 +27,7 @@ extern "C"
 {
 #endif
 
-void Markers__rosidl_typesupport_introspection_c__Markers_init_function(
+void mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_init_function(
   void * message_memory, enum rosidl_runtime_c__message_initialization _init)
 {
   // TODO(karsten1987): initializers are not yet implemented for typesupport c
@@ -36,12 +36,12 @@ void Markers__rosidl_typesupport_introspection_c__Markers_init_function(
   mocap_msgs__msg__Markers__init(message_memory);
 }
 
-void Markers__rosidl_typesupport_introspection_c__Markers_fini_function(void * message_memory)
+void mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_fini_function(void * message_memory)
 {
   mocap_msgs__msg__Markers__fini(message_memory);
 }
 
-size_t Markers__rosidl_typesupport_introspection_c__size_function__Marker__markers(
+size_t mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__size_function__Markers__markers(
   const void * untyped_member)
 {
   const mocap_msgs__msg__Marker__Sequence * member =
@@ -49,7 +49,7 @@ size_t Markers__rosidl_typesupport_introspection_c__size_function__Marker__marke
   return member->size;
 }
 
-const void * Markers__rosidl_typesupport_introspection_c__get_const_function__Marker__markers(
+const void * mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__get_const_function__Markers__markers(
   const void * untyped_member, size_t index)
 {
   const mocap_msgs__msg__Marker__Sequence * member =
@@ -57,7 +57,7 @@ const void * Markers__rosidl_typesupport_introspection_c__get_const_function__Ma
   return &member->data[index];
 }
 
-void * Markers__rosidl_typesupport_introspection_c__get_function__Marker__markers(
+void * mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__get_function__Markers__markers(
   void * untyped_member, size_t index)
 {
   mocap_msgs__msg__Marker__Sequence * member =
@@ -65,7 +65,29 @@ void * Markers__rosidl_typesupport_introspection_c__get_function__Marker__marker
   return &member->data[index];
 }
 
-bool Markers__rosidl_typesupport_introspection_c__resize_function__Marker__markers(
+void mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__fetch_function__Markers__markers(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const mocap_msgs__msg__Marker * item =
+    ((const mocap_msgs__msg__Marker *)
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__get_const_function__Markers__markers(untyped_member, index));
+  mocap_msgs__msg__Marker * value =
+    (mocap_msgs__msg__Marker *)(untyped_value);
+  *value = *item;
+}
+
+void mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__assign_function__Markers__markers(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  mocap_msgs__msg__Marker * item =
+    ((mocap_msgs__msg__Marker *)
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__get_function__Markers__markers(untyped_member, index));
+  const mocap_msgs__msg__Marker * value =
+    (const mocap_msgs__msg__Marker *)(untyped_value);
+  *item = *value;
+}
+
+bool mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__resize_function__Markers__markers(
   void * untyped_member, size_t size)
 {
   mocap_msgs__msg__Marker__Sequence * member =
@@ -74,7 +96,7 @@ bool Markers__rosidl_typesupport_introspection_c__resize_function__Marker__marke
   return mocap_msgs__msg__Marker__Sequence__init(member, size);
 }
 
-static rosidl_typesupport_introspection_c__MessageMember Markers__rosidl_typesupport_introspection_c__Markers_message_member_array[3] = {
+static rosidl_typesupport_introspection_c__MessageMember mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_member_array[3] = {
   {
     "header",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_MESSAGE,  // type
@@ -88,6 +110,8 @@ static rosidl_typesupport_introspection_c__MessageMember Markers__rosidl_typesup
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
     NULL,  // get(index) function pointer
+    NULL,  // fetch(index, &value) function pointer
+    NULL,  // assign(index, value) function pointer
     NULL  // resize(index) function pointer
   },
   {
@@ -103,6 +127,8 @@ static rosidl_typesupport_introspection_c__MessageMember Markers__rosidl_typesup
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
     NULL,  // get(index) function pointer
+    NULL,  // fetch(index, &value) function pointer
+    NULL,  // assign(index, value) function pointer
     NULL  // resize(index) function pointer
   },
   {
@@ -115,43 +141,45 @@ static rosidl_typesupport_introspection_c__MessageMember Markers__rosidl_typesup
     false,  // is upper bound
     offsetof(mocap_msgs__msg__Markers, markers),  // bytes offset in struct
     NULL,  // default value
-    Markers__rosidl_typesupport_introspection_c__size_function__Marker__markers,  // size() function pointer
-    Markers__rosidl_typesupport_introspection_c__get_const_function__Marker__markers,  // get_const(index) function pointer
-    Markers__rosidl_typesupport_introspection_c__get_function__Marker__markers,  // get(index) function pointer
-    Markers__rosidl_typesupport_introspection_c__resize_function__Marker__markers  // resize(index) function pointer
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__size_function__Markers__markers,  // size() function pointer
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__get_const_function__Markers__markers,  // get_const(index) function pointer
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__get_function__Markers__markers,  // get(index) function pointer
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__fetch_function__Markers__markers,  // fetch(index, &value) function pointer
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__assign_function__Markers__markers,  // assign(index, value) function pointer
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__resize_function__Markers__markers  // resize(index) function pointer
   }
 };
 
-static const rosidl_typesupport_introspection_c__MessageMembers Markers__rosidl_typesupport_introspection_c__Markers_message_members = {
+static const rosidl_typesupport_introspection_c__MessageMembers mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_members = {
   "mocap_msgs__msg",  // message namespace
   "Markers",  // message name
   3,  // number of fields
   sizeof(mocap_msgs__msg__Markers),
-  Markers__rosidl_typesupport_introspection_c__Markers_message_member_array,  // message members
-  Markers__rosidl_typesupport_introspection_c__Markers_init_function,  // function to initialize message memory (memory has to be allocated)
-  Markers__rosidl_typesupport_introspection_c__Markers_fini_function  // function to terminate message instance (will not free memory)
+  mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_member_array,  // message members
+  mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_init_function,  // function to initialize message memory (memory has to be allocated)
+  mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_fini_function  // function to terminate message instance (will not free memory)
 };
 
 // this is not const since it must be initialized on first access
 // since C does not allow non-integral compile-time constants
-static rosidl_message_type_support_t Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle = {
+static rosidl_message_type_support_t mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle = {
   0,
-  &Markers__rosidl_typesupport_introspection_c__Markers_message_members,
+  &mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_members,
   get_message_typesupport_handle_function,
 };
 
 ROSIDL_TYPESUPPORT_INTROSPECTION_C_EXPORT_mocap_msgs
 const rosidl_message_type_support_t *
 ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, mocap_msgs, msg, Markers)() {
-  Markers__rosidl_typesupport_introspection_c__Markers_message_member_array[0].members_ =
+  mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_member_array[0].members_ =
     ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, std_msgs, msg, Header)();
-  Markers__rosidl_typesupport_introspection_c__Markers_message_member_array[2].members_ =
+  mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_member_array[2].members_ =
     ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, mocap_msgs, msg, Marker)();
-  if (!Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle.typesupport_identifier) {
-    Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle.typesupport_identifier =
+  if (!mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle.typesupport_identifier) {
+    mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle.typesupport_identifier =
       rosidl_typesupport_introspection_c__identifier;
   }
-  return &Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle;
+  return &mocap_msgs__msg__Markers__rosidl_typesupport_introspection_c__Markers_message_type_support_handle;
 }
 #ifdef __cplusplus
 }

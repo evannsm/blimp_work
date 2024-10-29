@@ -4,8 +4,8 @@
 
 #include "cstddef"
 #include "rosidl_runtime_c/message_type_support_struct.h"
-#include "mocap_msgs/msg/rosidl_typesupport_c__visibility_control.h"
 #include "mocap_msgs/msg/detail/markers__struct.h"
+#include "mocap_msgs/msg/detail/markers__type_support.h"
 #include "rosidl_typesupport_c/identifier.h"
 #include "rosidl_typesupport_c/message_type_support_dispatch.h"
 #include "rosidl_typesupport_c/type_support_map.h"
@@ -85,7 +85,6 @@ extern "C"
 {
 #endif
 
-ROSIDL_TYPESUPPORT_C_EXPORT_mocap_msgs
 const rosidl_message_type_support_t *
 ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_c, mocap_msgs, msg, Markers)() {
   return &::mocap_msgs::msg::rosidl_typesupport_c::Markers_message_type_support_handle;

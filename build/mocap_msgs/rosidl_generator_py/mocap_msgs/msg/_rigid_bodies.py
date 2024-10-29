@@ -5,6 +5,8 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -129,7 +131,7 @@ class RigidBodies(metaclass=Metaclass_RigidBodies):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def header(self):
         """Message field 'header'."""
         return self._header
@@ -143,7 +145,7 @@ class RigidBodies(metaclass=Metaclass_RigidBodies):
                 "The 'header' field must be a sub message of type 'Header'"
         self._header = value
 
-    @property
+    @builtins.property
     def frame_number(self):
         """Message field 'frame_number'."""
         return self._frame_number
@@ -158,7 +160,7 @@ class RigidBodies(metaclass=Metaclass_RigidBodies):
                 "The 'frame_number' field must be an unsigned integer in [0, 4294967295]"
         self._frame_number = value
 
-    @property
+    @builtins.property
     def rigidbodies(self):
         """Message field 'rigidbodies'."""
         return self._rigidbodies

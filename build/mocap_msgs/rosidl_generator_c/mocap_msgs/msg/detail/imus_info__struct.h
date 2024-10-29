@@ -21,7 +21,7 @@ extern "C"
 // Member 'sensor_ids'
 #include "rosidl_runtime_c/string.h"
 
-// Struct defined in msg/ImusInfo in the package mocap_msgs.
+/// Struct defined in msg/ImusInfo in the package mocap_msgs.
 typedef struct mocap_msgs__msg__ImusInfo
 {
   rosidl_runtime_c__String__Sequence sensor_ids;

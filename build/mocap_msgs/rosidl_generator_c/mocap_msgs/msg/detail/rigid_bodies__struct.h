@@ -23,7 +23,7 @@ extern "C"
 // Member 'rigidbodies'
 #include "mocap_msgs/msg/detail/rigid_body__struct.h"
 
-// Struct defined in msg/RigidBodies in the package mocap_msgs.
+/// Struct defined in msg/RigidBodies in the package mocap_msgs.
 typedef struct mocap_msgs__msg__RigidBodies
 {
   std_msgs__msg__Header header;

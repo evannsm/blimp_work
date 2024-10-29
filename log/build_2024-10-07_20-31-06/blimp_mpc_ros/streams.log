@@ -1,7 +1,0 @@
-[1.866s] Invoking command in '/home/factslabegmc/final_blimp_ws/build/blimp_mpc_ros': PYTHONPATH=/home/factslabegmc/final_blimp_ws/build/blimp_mpc_ros/prefix_override:/home/factslabegmc/final_blimp_ws/install/blimp_mpc_ros/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/factslabegmc/final_blimp_ws/build/blimp_mpc_ros/build --no-deps install_data
-[2.059s] running develop
-[2.178s] running egg_info
-[2.182s] writing manifest file 'blimp_mpc_ros.egg-info/SOURCES.txt'
-[2.207s] running build_ext
-[2.209s] running install_data
-[2.355s] Invoked command in '/home/factslabegmc/final_blimp_ws/build/blimp_mpc_ros' returned '0': PYTHONPATH=/home/factslabegmc/final_blimp_ws/build/blimp_mpc_ros/prefix_override:/home/factslabegmc/final_blimp_ws/install/blimp_mpc_ros/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/factslabegmc/final_blimp_ws/build/blimp_mpc_ros/build --no-deps install_data

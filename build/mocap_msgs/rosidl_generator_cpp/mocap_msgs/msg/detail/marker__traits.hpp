@@ -5,22 +5,61 @@
 #ifndef MOCAP_MSGS__MSG__DETAIL__MARKER__TRAITS_HPP_
 #define MOCAP_MSGS__MSG__DETAIL__MARKER__TRAITS_HPP_
 
-#include "mocap_msgs/msg/detail/marker__struct.hpp"
 #include <stdint.h>
-#include <rosidl_runtime_cpp/traits.hpp>
+
 #include <sstream>
 #include <string>
 #include <type_traits>
+
+#include "mocap_msgs/msg/detail/marker__struct.hpp"
+#include "rosidl_runtime_cpp/traits.hpp"
 
 // Include directives for member types
 // Member 'translation'
 #include "geometry_msgs/msg/detail/point__traits.hpp"
 
-namespace rosidl_generator_traits
+namespace mocap_msgs
 {
 
-inline void to_yaml(
-  const mocap_msgs::msg::Marker & msg,
+namespace msg
+{
+
+inline void to_flow_style_yaml(
+  const Marker & msg,
+  std::ostream & out)
+{
+  out << "{";
+  // member: id_type
+  {
+    out << "id_type: ";
+    rosidl_generator_traits::value_to_yaml(msg.id_type, out);
+    out << ", ";
+  }
+
+  // member: marker_index
+  {
+    out << "marker_index: ";
+    rosidl_generator_traits::value_to_yaml(msg.marker_index, out);
+    out << ", ";
+  }
+
+  // member: marker_name
+  {
+    out << "marker_name: ";
+    rosidl_generator_traits::value_to_yaml(msg.marker_name, out);
+    out << ", ";
+  }
+
+  // member: translation
+  {
+    out << "translation: ";
+    to_flow_style_yaml(msg.translation, out);
+  }
+  out << "}";
+}  // NOLINT(readability/fn_size)
+
+inline void to_block_style_yaml(
+  const Marker & msg,
   std::ostream & out, size_t indentation = 0)
 {
   // member: id_type
@@ -29,7 +68,7 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "id_type: ";
-    value_to_yaml(msg.id_type, out);
+    rosidl_generator_traits::value_to_yaml(msg.id_type, out);
     out << "\n";
   }
 
@@ -39,7 +78,7 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "marker_index: ";
-    value_to_yaml(msg.marker_index, out);
+    rosidl_generator_traits::value_to_yaml(msg.marker_index, out);
     out << "\n";
   }
 
@@ -49,7 +88,7 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "marker_name: ";
-    value_to_yaml(msg.marker_name, out);
+    rosidl_generator_traits::value_to_yaml(msg.marker_name, out);
     out << "\n";
   }
 
@@ -59,15 +98,40 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "translation:\n";
-    to_yaml(msg.translation, out, indentation + 2);
+    to_block_style_yaml(msg.translation, out, indentation + 2);
   }
 }  // NOLINT(readability/fn_size)
 
-inline std::string to_yaml(const mocap_msgs::msg::Marker & msg)
+inline std::string to_yaml(const Marker & msg, bool use_flow_style = false)
 {
   std::ostringstream out;
-  to_yaml(msg, out);
+  if (use_flow_style) {
+    to_flow_style_yaml(msg, out);
+  } else {
+    to_block_style_yaml(msg, out);
+  }
   return out.str();
+}
+
+}  // namespace msg
+
+}  // namespace mocap_msgs
+
+namespace rosidl_generator_traits
+{
+
+[[deprecated("use mocap_msgs::msg::to_block_style_yaml() instead")]]
+inline void to_yaml(
+  const mocap_msgs::msg::Marker & msg,
+  std::ostream & out, size_t indentation = 0)
+{
+  mocap_msgs::msg::to_block_style_yaml(msg, out, indentation);
+}
+
+[[deprecated("use mocap_msgs::msg::to_yaml() instead")]]
+inline std::string to_yaml(const mocap_msgs::msg::Marker & msg)
+{
+  return mocap_msgs::msg::to_yaml(msg);
 }
 
 template<>

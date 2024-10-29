@@ -57,6 +57,24 @@ void * get_function__RigidBodies__rigidbodies(void * untyped_member, size_t inde
   return &member[index];
 }
 
+void fetch_function__RigidBodies__rigidbodies(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const auto & item = *reinterpret_cast<const mocap_msgs::msg::RigidBody *>(
+    get_const_function__RigidBodies__rigidbodies(untyped_member, index));
+  auto & value = *reinterpret_cast<mocap_msgs::msg::RigidBody *>(untyped_value);
+  value = item;
+}
+
+void assign_function__RigidBodies__rigidbodies(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  auto & item = *reinterpret_cast<mocap_msgs::msg::RigidBody *>(
+    get_function__RigidBodies__rigidbodies(untyped_member, index));
+  const auto & value = *reinterpret_cast<const mocap_msgs::msg::RigidBody *>(untyped_value);
+  item = value;
+}
+
 void resize_function__RigidBodies__rigidbodies(void * untyped_member, size_t size)
 {
   auto * member =
@@ -78,6 +96,8 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember RigidBodies_m
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer
     nullptr,  // get(index) function pointer
+    nullptr,  // fetch(index, &value) function pointer
+    nullptr,  // assign(index, value) function pointer
     nullptr  // resize(index) function pointer
   },
   {
@@ -93,6 +113,8 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember RigidBodies_m
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer
     nullptr,  // get(index) function pointer
+    nullptr,  // fetch(index, &value) function pointer
+    nullptr,  // assign(index, value) function pointer
     nullptr  // resize(index) function pointer
   },
   {
@@ -108,6 +130,8 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember RigidBodies_m
     size_function__RigidBodies__rigidbodies,  // size() function pointer
     get_const_function__RigidBodies__rigidbodies,  // get_const(index) function pointer
     get_function__RigidBodies__rigidbodies,  // get(index) function pointer
+    fetch_function__RigidBodies__rigidbodies,  // fetch(index, &value) function pointer
+    assign_function__RigidBodies__rigidbodies,  // assign(index, value) function pointer
     resize_function__RigidBodies__rigidbodies  // resize(index) function pointer
   }
 };

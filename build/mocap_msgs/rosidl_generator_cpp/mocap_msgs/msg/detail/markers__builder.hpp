@@ -5,10 +5,11 @@
 #ifndef MOCAP_MSGS__MSG__DETAIL__MARKERS__BUILDER_HPP_
 #define MOCAP_MSGS__MSG__DETAIL__MARKERS__BUILDER_HPP_
 
-#include "mocap_msgs/msg/detail/markers__struct.hpp"
-#include <rosidl_runtime_cpp/message_initialization.hpp>
 #include <algorithm>
 #include <utility>
+
+#include "mocap_msgs/msg/detail/markers__struct.hpp"
+#include "rosidl_runtime_cpp/message_initialization.hpp"
 
 
 namespace mocap_msgs

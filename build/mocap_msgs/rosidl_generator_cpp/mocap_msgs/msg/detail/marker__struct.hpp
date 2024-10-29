@@ -5,13 +5,14 @@
 #ifndef MOCAP_MSGS__MSG__DETAIL__MARKER__STRUCT_HPP_
 #define MOCAP_MSGS__MSG__DETAIL__MARKER__STRUCT_HPP_
 
-#include <rosidl_runtime_cpp/bounded_vector.hpp>
-#include <rosidl_runtime_cpp/message_initialization.hpp>
 #include <algorithm>
 #include <array>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "rosidl_runtime_cpp/bounded_vector.hpp"
+#include "rosidl_runtime_cpp/message_initialization.hpp"
 
 
 // Include directives for member types
@@ -174,12 +175,21 @@ using Marker =
   mocap_msgs::msg::Marker_<std::allocator<void>>;
 
 // constant definitions
+#if __cplusplus < 201703L
+// static constexpr member variable definitions are only needed in C++14 and below, deprecated in C++17
 template<typename ContainerAllocator>
 constexpr int8_t Marker_<ContainerAllocator>::USE_NAME;
+#endif  // __cplusplus < 201703L
+#if __cplusplus < 201703L
+// static constexpr member variable definitions are only needed in C++14 and below, deprecated in C++17
 template<typename ContainerAllocator>
 constexpr int8_t Marker_<ContainerAllocator>::USE_INDEX;
+#endif  // __cplusplus < 201703L
+#if __cplusplus < 201703L
+// static constexpr member variable definitions are only needed in C++14 and below, deprecated in C++17
 template<typename ContainerAllocator>
 constexpr int8_t Marker_<ContainerAllocator>::USE_BOTH;
+#endif  // __cplusplus < 201703L
 
 }  // namespace msg
 

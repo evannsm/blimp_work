@@ -1,9 +1,0 @@
-source;share/blimp_node_2/hook/pythonpath.ps1
-source;share/blimp_node_2/hook/pythonpath.dsv
-source;share/blimp_node_2/hook/pythonpath.sh
-source;share/blimp_node_2/hook/ament_prefix_path.ps1
-source;share/blimp_node_2/hook/ament_prefix_path.dsv
-source;share/blimp_node_2/hook/ament_prefix_path.sh
-source;../../build/blimp_node_2/share/blimp_node_2/hook/pythonpath_develop.ps1
-source;../../build/blimp_node_2/share/blimp_node_2/hook/pythonpath_develop.dsv
-source;../../build/blimp_node_2/share/blimp_node_2/hook/pythonpath_develop.sh

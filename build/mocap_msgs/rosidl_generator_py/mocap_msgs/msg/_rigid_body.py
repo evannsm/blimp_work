@@ -5,6 +5,8 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -129,7 +131,7 @@ class RigidBody(metaclass=Metaclass_RigidBody):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def rigid_body_name(self):
         """Message field 'rigid_body_name'."""
         return self._rigid_body_name
@@ -142,7 +144,7 @@ class RigidBody(metaclass=Metaclass_RigidBody):
                 "The 'rigid_body_name' field must be of type 'str'"
         self._rigid_body_name = value
 
-    @property
+    @builtins.property
     def markers(self):
         """Message field 'markers'."""
         return self._markers
@@ -166,7 +168,7 @@ class RigidBody(metaclass=Metaclass_RigidBody):
                 "The 'markers' field must be a set or sequence and each value of type 'Marker'"
         self._markers = value
 
-    @property
+    @builtins.property
     def pose(self):
         """Message field 'pose'."""
         return self._pose

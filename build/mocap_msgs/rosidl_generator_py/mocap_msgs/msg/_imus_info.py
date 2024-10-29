@@ -5,6 +5,10 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
+import math  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -120,7 +124,7 @@ class ImusInfo(metaclass=Metaclass_ImusInfo):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def sensor_ids(self):
         """Message field 'sensor_ids'."""
         return self._sensor_ids
@@ -143,7 +147,7 @@ class ImusInfo(metaclass=Metaclass_ImusInfo):
                 "The 'sensor_ids' field must be a set or sequence and each value of type 'str'"
         self._sensor_ids = value
 
-    @property
+    @builtins.property
     def battery_level(self):
         """Message field 'battery_level'."""
         return self._battery_level
@@ -154,9 +158,11 @@ class ImusInfo(metaclass=Metaclass_ImusInfo):
             assert \
                 isinstance(value, float), \
                 "The 'battery_level' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'battery_level' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._battery_level = value
 
-    @property
+    @builtins.property
     def temperature(self):
         """Message field 'temperature'."""
         return self._temperature
@@ -167,4 +173,6 @@ class ImusInfo(metaclass=Metaclass_ImusInfo):
             assert \
                 isinstance(value, float), \
                 "The 'temperature' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'temperature' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._temperature = value

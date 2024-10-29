@@ -23,6 +23,7 @@ size_t get_serialized_size_mocap_msgs__msg__RigidBody(
 ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_mocap_msgs
 size_t max_serialized_size_mocap_msgs__msg__RigidBody(
   bool & full_bounded,
+  bool & is_plain,
   size_t current_alignment);
 
 ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_mocap_msgs

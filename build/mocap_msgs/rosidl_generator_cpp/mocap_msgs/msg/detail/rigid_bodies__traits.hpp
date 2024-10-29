@@ -5,12 +5,14 @@
 #ifndef MOCAP_MSGS__MSG__DETAIL__RIGID_BODIES__TRAITS_HPP_
 #define MOCAP_MSGS__MSG__DETAIL__RIGID_BODIES__TRAITS_HPP_
 
-#include "mocap_msgs/msg/detail/rigid_bodies__struct.hpp"
 #include <stdint.h>
-#include <rosidl_runtime_cpp/traits.hpp>
+
 #include <sstream>
 #include <string>
 #include <type_traits>
+
+#include "mocap_msgs/msg/detail/rigid_bodies__struct.hpp"
+#include "rosidl_runtime_cpp/traits.hpp"
 
 // Include directives for member types
 // Member 'header'
@@ -18,11 +20,52 @@
 // Member 'rigidbodies'
 #include "mocap_msgs/msg/detail/rigid_body__traits.hpp"
 
-namespace rosidl_generator_traits
+namespace mocap_msgs
 {
 
-inline void to_yaml(
-  const mocap_msgs::msg::RigidBodies & msg,
+namespace msg
+{
+
+inline void to_flow_style_yaml(
+  const RigidBodies & msg,
+  std::ostream & out)
+{
+  out << "{";
+  // member: header
+  {
+    out << "header: ";
+    to_flow_style_yaml(msg.header, out);
+    out << ", ";
+  }
+
+  // member: frame_number
+  {
+    out << "frame_number: ";
+    rosidl_generator_traits::value_to_yaml(msg.frame_number, out);
+    out << ", ";
+  }
+
+  // member: rigidbodies
+  {
+    if (msg.rigidbodies.size() == 0) {
+      out << "rigidbodies: []";
+    } else {
+      out << "rigidbodies: [";
+      size_t pending_items = msg.rigidbodies.size();
+      for (auto item : msg.rigidbodies) {
+        to_flow_style_yaml(item, out);
+        if (--pending_items > 0) {
+          out << ", ";
+        }
+      }
+      out << "]";
+    }
+  }
+  out << "}";
+}  // NOLINT(readability/fn_size)
+
+inline void to_block_style_yaml(
+  const RigidBodies & msg,
   std::ostream & out, size_t indentation = 0)
 {
   // member: header
@@ -31,7 +74,7 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "header:\n";
-    to_yaml(msg.header, out, indentation + 2);
+    to_block_style_yaml(msg.header, out, indentation + 2);
   }
 
   // member: frame_number
@@ -40,7 +83,7 @@ inline void to_yaml(
       out << std::string(indentation, ' ');
     }
     out << "frame_number: ";
-    value_to_yaml(msg.frame_number, out);
+    rosidl_generator_traits::value_to_yaml(msg.frame_number, out);
     out << "\n";
   }
 
@@ -58,17 +101,42 @@ inline void to_yaml(
           out << std::string(indentation, ' ');
         }
         out << "-\n";
-        to_yaml(item, out, indentation + 2);
+        to_block_style_yaml(item, out, indentation + 2);
       }
     }
   }
 }  // NOLINT(readability/fn_size)
 
-inline std::string to_yaml(const mocap_msgs::msg::RigidBodies & msg)
+inline std::string to_yaml(const RigidBodies & msg, bool use_flow_style = false)
 {
   std::ostringstream out;
-  to_yaml(msg, out);
+  if (use_flow_style) {
+    to_flow_style_yaml(msg, out);
+  } else {
+    to_block_style_yaml(msg, out);
+  }
   return out.str();
+}
+
+}  // namespace msg
+
+}  // namespace mocap_msgs
+
+namespace rosidl_generator_traits
+{
+
+[[deprecated("use mocap_msgs::msg::to_block_style_yaml() instead")]]
+inline void to_yaml(
+  const mocap_msgs::msg::RigidBodies & msg,
+  std::ostream & out, size_t indentation = 0)
+{
+  mocap_msgs::msg::to_block_style_yaml(msg, out, indentation);
+}
+
+[[deprecated("use mocap_msgs::msg::to_yaml() instead")]]
+inline std::string to_yaml(const mocap_msgs::msg::RigidBodies & msg)
+{
+  return mocap_msgs::msg::to_yaml(msg);
 }
 
 template<>

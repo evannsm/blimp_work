@@ -25,7 +25,7 @@ extern "C"
 // Member 'pose'
 #include "geometry_msgs/msg/detail/pose__struct.h"
 
-// Struct defined in msg/RigidBody in the package mocap_msgs.
+/// Struct defined in msg/RigidBody in the package mocap_msgs.
 typedef struct mocap_msgs__msg__RigidBody
 {
   rosidl_runtime_c__String rigid_body_name;

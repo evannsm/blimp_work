@@ -4,9 +4,6 @@ source;share/mocap_msgs/hook/cmake_prefix_path.sh
 source;share/mocap_msgs/hook/ld_library_path_lib.ps1
 source;share/mocap_msgs/hook/ld_library_path_lib.dsv
 source;share/mocap_msgs/hook/ld_library_path_lib.sh
-source;share/mocap_msgs/hook/pythonpath.ps1
-source;share/mocap_msgs/hook/pythonpath.dsv
-source;share/mocap_msgs/hook/pythonpath.sh
 source;share/mocap_msgs/local_setup.bash
 source;share/mocap_msgs/local_setup.dsv
 source;share/mocap_msgs/local_setup.ps1

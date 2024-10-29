@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "rcutils/allocator.h"
+
 
 // Include directives for member types
 // Member `marker_name`
@@ -109,14 +111,15 @@ mocap_msgs__msg__Marker__copy(
 mocap_msgs__msg__Marker *
 mocap_msgs__msg__Marker__create()
 {
-  mocap_msgs__msg__Marker * msg = (mocap_msgs__msg__Marker *)malloc(sizeof(mocap_msgs__msg__Marker));
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  mocap_msgs__msg__Marker * msg = (mocap_msgs__msg__Marker *)allocator.allocate(sizeof(mocap_msgs__msg__Marker), allocator.state);
   if (!msg) {
     return NULL;
   }
   memset(msg, 0, sizeof(mocap_msgs__msg__Marker));
   bool success = mocap_msgs__msg__Marker__init(msg);
   if (!success) {
-    free(msg);
+    allocator.deallocate(msg, allocator.state);
     return NULL;
   }
   return msg;
@@ -125,10 +128,11 @@ mocap_msgs__msg__Marker__create()
 void
 mocap_msgs__msg__Marker__destroy(mocap_msgs__msg__Marker * msg)
 {
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
   if (msg) {
     mocap_msgs__msg__Marker__fini(msg);
   }
-  free(msg);
+  allocator.deallocate(msg, allocator.state);
 }
 
 
@@ -138,9 +142,11 @@ mocap_msgs__msg__Marker__Sequence__init(mocap_msgs__msg__Marker__Sequence * arra
   if (!array) {
     return false;
   }
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
   mocap_msgs__msg__Marker * data = NULL;
+
   if (size) {
-    data = (mocap_msgs__msg__Marker *)calloc(size, sizeof(mocap_msgs__msg__Marker));
+    data = (mocap_msgs__msg__Marker *)allocator.zero_allocate(size, sizeof(mocap_msgs__msg__Marker), allocator.state);
     if (!data) {
       return false;
     }
@@ -157,7 +163,7 @@ mocap_msgs__msg__Marker__Sequence__init(mocap_msgs__msg__Marker__Sequence * arra
       for (; i > 0; --i) {
         mocap_msgs__msg__Marker__fini(&data[i - 1]);
       }
-      free(data);
+      allocator.deallocate(data, allocator.state);
       return false;
     }
   }
@@ -173,6 +179,8 @@ mocap_msgs__msg__Marker__Sequence__fini(mocap_msgs__msg__Marker__Sequence * arra
   if (!array) {
     return;
   }
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+
   if (array->data) {
     // ensure that data and capacity values are consistent
     assert(array->capacity > 0);
@@ -180,7 +188,7 @@ mocap_msgs__msg__Marker__Sequence__fini(mocap_msgs__msg__Marker__Sequence * arra
     for (size_t i = 0; i < array->capacity; ++i) {
       mocap_msgs__msg__Marker__fini(&array->data[i]);
     }
-    free(array->data);
+    allocator.deallocate(array->data, allocator.state);
     array->data = NULL;
     array->size = 0;
     array->capacity = 0;
@@ -194,13 +202,14 @@ mocap_msgs__msg__Marker__Sequence__fini(mocap_msgs__msg__Marker__Sequence * arra
 mocap_msgs__msg__Marker__Sequence *
 mocap_msgs__msg__Marker__Sequence__create(size_t size)
 {
-  mocap_msgs__msg__Marker__Sequence * array = (mocap_msgs__msg__Marker__Sequence *)malloc(sizeof(mocap_msgs__msg__Marker__Sequence));
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  mocap_msgs__msg__Marker__Sequence * array = (mocap_msgs__msg__Marker__Sequence *)allocator.allocate(sizeof(mocap_msgs__msg__Marker__Sequence), allocator.state);
   if (!array) {
     return NULL;
   }
   bool success = mocap_msgs__msg__Marker__Sequence__init(array, size);
   if (!success) {
-    free(array);
+    allocator.deallocate(array, allocator.state);
     return NULL;
   }
   return array;
@@ -209,10 +218,11 @@ mocap_msgs__msg__Marker__Sequence__create(size_t size)
 void
 mocap_msgs__msg__Marker__Sequence__destroy(mocap_msgs__msg__Marker__Sequence * array)
 {
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
   if (array) {
     mocap_msgs__msg__Marker__Sequence__fini(array);
   }
-  free(array);
+  allocator.deallocate(array, allocator.state);
 }
 
 bool
@@ -243,22 +253,27 @@ mocap_msgs__msg__Marker__Sequence__copy(
   if (output->capacity < input->size) {
     const size_t allocation_size =
       input->size * sizeof(mocap_msgs__msg__Marker);
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
     mocap_msgs__msg__Marker * data =
-      (mocap_msgs__msg__Marker *)realloc(output->data, allocation_size);
+      (mocap_msgs__msg__Marker *)allocator.reallocate(
+      output->data, allocation_size, allocator.state);
     if (!data) {
       return false;
     }
+    // If reallocation succeeded, memory may or may not have been moved
+    // to fulfill the allocation request, invalidating output->data.
+    output->data = data;
     for (size_t i = output->capacity; i < input->size; ++i) {
-      if (!mocap_msgs__msg__Marker__init(&data[i])) {
-        /* free currently allocated and return false */
+      if (!mocap_msgs__msg__Marker__init(&output->data[i])) {
+        // If initialization of any new item fails, roll back
+        // all previously initialized items. Existing items
+        // in output are to be left unmodified.
         for (; i-- > output->capacity; ) {
-          mocap_msgs__msg__Marker__fini(&data[i]);
+          mocap_msgs__msg__Marker__fini(&output->data[i]);
         }
-        free(data);
         return false;
       }
     }
-    output->data = data;
     output->capacity = input->size;
   }
   output->size = input->size;

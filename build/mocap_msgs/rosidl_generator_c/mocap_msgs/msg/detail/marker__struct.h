@@ -41,7 +41,7 @@ enum
 // Member 'translation'
 #include "geometry_msgs/msg/detail/point__struct.h"
 
-// Struct defined in msg/Marker in the package mocap_msgs.
+/// Struct defined in msg/Marker in the package mocap_msgs.
 typedef struct mocap_msgs__msg__Marker
 {
   int8_t id_type;

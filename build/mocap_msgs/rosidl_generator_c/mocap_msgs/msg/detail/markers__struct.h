@@ -23,7 +23,7 @@ extern "C"
 // Member 'markers'
 #include "mocap_msgs/msg/detail/marker__struct.h"
 
-// Struct defined in msg/Markers in the package mocap_msgs.
+/// Struct defined in msg/Markers in the package mocap_msgs.
 typedef struct mocap_msgs__msg__Markers
 {
   std_msgs__msg__Header header;
