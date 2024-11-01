@@ -143,7 +143,32 @@ def dynamics(state, u):
 
         return jnp.array([xdot, ydot, zdot, vxdot, vydot, vzdot, rolldot, pitchdot, yawdot, wxdot, wydot, wzdot])
 
+@jit
+def rk4_pred(state, inputs, integration_step, C):
+    k1 = dynamics(state, inputs)
+    k2 = dynamics(state + k1 * integration_step / 2, inputs)
+    k3 = dynamics(state + k2 * integration_step / 2, inputs)
+    k4 = dynamics(state + k3 * integration_step, inputs)
 
+    pred_state = state + (k1 + 2*k2 + 2*k3 + k4) * integration_step / 6
+    return C@pred_state
+
+@jit
+def rk4_jac(state, inputs, integration_step, C):
+    jac_fn = jacfwd(lambda x: rk4_pred(state, x, integration_step, C))
+    jacobian = jac_fn(inputs).reshape(4, 4)
+    return jacobian
+
+@jit
+def rk4_invjac(state, inputs, integration_step, C):
+    jacobian = rk4_jac(state, inputs, integration_step, C)
+    regularization_term = 1e-9
+    jacobian += jnp.eye(jacobian.shape[0]) * regularization_term
+    
+    cond_number = jnp.linalg.cond(jacobian)
+    inv_jacobian = jnp.linalg.pinv(jacobian)
+
+    return inv_jacobian, cond_number
 
 # Function to integrate dynamics over time
 @jit
