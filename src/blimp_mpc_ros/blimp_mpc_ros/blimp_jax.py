@@ -144,65 +144,85 @@ def dynamics(state, u):
         return jnp.array([xdot, ydot, zdot, vxdot, vydot, vzdot, rolldot, pitchdot, yawdot, wxdot, wydot, wzdot])
 
 @jit
-def rk4_pred(state, inputs, integration_step, C):
-    k1 = dynamics(state, inputs)
-    k2 = dynamics(state + k1 * integration_step / 2, inputs)
-    k3 = dynamics(state + k2 * integration_step / 2, inputs)
-    k4 = dynamics(state + k3 * integration_step, inputs)
-
-    pred_state = state + (k1 + 2*k2 + 2*k3 + k4) * integration_step / 6
+def rk4_pred(state, inputs, T_lookahead, integration_step, C):
+    def for_function(i, state):
+        k1 = dynamics(state, inputs)
+        k2 = dynamics(state + k1 * integration_step / 2, inputs)
+        k3 = dynamics(state + k2 * integration_step / 2, inputs)
+        k4 = dynamics(state + k3 * integration_step, inputs)
+        return state + (k1 + 2*k2 + 2*k3 + k4) * integration_step / 6
+ 
+    integrations_int = (T_lookahead / integration_step).astype(int)
+    pred_state = lax.fori_loop(0, integrations_int, for_function, state)
     return C@pred_state
 
-@jit
-def rk4_jac(state, inputs, integration_step, C):
-    jac_fn = jacfwd(lambda x: rk4_pred(state, x, integration_step, C))
-    jacobian = jac_fn(inputs).reshape(4, 4)
-    return jacobian
+# @jit
+# def rk4_pred(state, inputs, T_lookahead, integration_step, C):
+#     def for_function(i, state):
+#         k1 = dynamics(state, inputs)
+#         k2 = dynamics(state + (4 / 27) * k1 * integration_step, inputs)
+#         k3 = dynamics(state + (1 / 18) * k1 * integration_step + (1 / 18) * k2 * integration_step, inputs)
+#         k4 = dynamics(state + (1 / 12) * k1 * integration_step + (1 / 6) * k3 * integration_step, inputs)
+#         k5 = dynamics(state + (1 / 8) * k1 * integration_step + (3 / 8) * k4 * integration_step, inputs)
+#         k6 = dynamics(state + (1 / 2) * k1 * integration_step - (3 / 2) * k4 * integration_step + (3 / 2) * k5 * integration_step, inputs)
+#         k7 = dynamics(state - (3 / 7) * k1 * integration_step + (2 / 7) * k3 * integration_step + (12 / 7) * k4 * integration_step - (12 / 7) * k5 * integration_step + (8 / 7) * k6 * integration_step, inputs)
+#         k8 = dynamics(state + (7 / 90) * k1 * integration_step + (32 / 90) * k5 * integration_step + (12 / 90) * k6 * integration_step + (32 / 90) * k7 * integration_step, inputs)
+#         k9 = dynamics(state + (4 / 27) * k1 * integration_step + (27 / 27) * k4 * integration_step - (27 / 27) * k6 * integration_step + (27 / 27) * k7 * integration_step, inputs)
+#         k10 = dynamics(state + (9 / 40) * k1 * integration_step + (9 / 40) * k6 * integration_step + (32 / 40) * k8 * integration_step - (32 / 40) * k9 * integration_step, inputs)
+#         k11 = dynamics(state + (9 / 10) * k1 * integration_step + (4 / 10) * k8 * integration_step - (4 / 10) * k9 * integration_step + (9 / 10) * k10 * integration_step, inputs)
+#         k12 = dynamics(state + (1 / 2) * k1 * integration_step + (3 / 4) * k10 * integration_step, inputs)
+#         k13 = dynamics(state + (3 / 10) * k1 * integration_step + (8 / 15) * k12 * integration_step, inputs)
+
+#         return state + (41 * k1 + 27 * k3 + 272 * k4 + 27 * k5 + 216 * k6 + 216 * k7 + 41 * k8) * integration_step / 840
+
+#     integrations_int = (T_lookahead / integration_step).astype(int)
+#     pred_state = lax.fori_loop(0, integrations_int, for_function, state)
+#     return C @ pred_state
 
 @jit
-def rk4_invjac(state, inputs, integration_step, C):
-    jacobian = rk4_jac(state, inputs, integration_step, C)
-    regularization_term = 1e-9
+def rk4_jac(state, inputs, T_lookahead, integration_step, C):
+    jacobian = jacfwd(rk4_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
+    return jacobian.reshape(4, 4)
+
+@jit
+def rk4_invjac(state, inputs, T_lookahead, integration_step, C):
+    jacobian = rk4_jac(state, inputs, T_lookahead, integration_step, C)
+    regularization_term = 1e-4
     jacobian += jnp.eye(jacobian.shape[0]) * regularization_term
-    
+
     cond_number = jnp.linalg.cond(jacobian)
     inv_jacobian = jnp.linalg.pinv(jacobian)
-
     return inv_jacobian, cond_number
 
 # Function to integrate dynamics over time
-@jit
+# @jit
 def integrate_dynamics(state, inputs, integration_step, integrations_int):
     def for_function(i, current_state):
         return current_state + dynamics(current_state, inputs) * integration_step
-
     pred_state = lax.fori_loop(0, integrations_int, for_function, state)
     return pred_state
 
 # Prediction function
 @jit
-def predict_outputs(state, last_input, T_lookahead, C, integration_step, integrations_int):
-    inputs = last_input
+def predict_outputs(state, inputs, T_lookahead, integration_step, C):
+    integrations_int = (T_lookahead / integration_step).astype(int)
     pred_state = integrate_dynamics(state, inputs, integration_step, integrations_int)
-    # print(f"{pred_state = }")
     return C@pred_state
 
 
 # Compute Jacobian
 @jit
-def compute_jacobian(state, last_input, T_lookahead, C, integration_step, integrations_int):
-    jac_fn = jacfwd(lambda x: predict_outputs(state, x, T_lookahead, C, integration_step, integrations_int))
-    return jac_fn(last_input).reshape(4,4)
+def compute_jacobian(state, inputs, T_lookahead, integration_step, C):
+    jacobian = jacfwd(predict_outputs, argnums=1)(state, inputs, T_lookahead, integration_step, C)
+    return jacobian.reshape(4,4)
 
 # Compute adjusted inverse Jacobian
 @jit
-def compute_adjusted_invjac(state, last_input, T_lookahead, C, integration_step, integrations_int):
-    jac = compute_jacobian(state, last_input, T_lookahead, C, integration_step, integrations_int)
-
+def compute_adjusted_invjac(state, inputs, T_lookahead, integration_step, C):
+    jac = compute_jacobian(state, inputs, T_lookahead, integration_step, C)
     regularization_term = 1e-9
     jac += jnp.eye(jac.shape[0]) * regularization_term
     
     cond_number = jnp.linalg.cond(jac)
     inv_jacobian = jnp.linalg.pinv(jac)
-
     return inv_jacobian, cond_number

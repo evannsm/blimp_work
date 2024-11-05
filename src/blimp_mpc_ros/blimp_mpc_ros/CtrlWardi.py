@@ -385,22 +385,18 @@ class CtrlWardi(BlimpController):
         # print(f"input.shape: \n{INPUT.shape}")
 
         
-        integration_step = 0.05
-        integrations_int = int(self.T_lookahead / integration_step)
-        print(f"{integrations_int = }")
+        integration_step = 0.01    
+        # outputs = predict_outputs(STATE, INPUT, self.T_lookahead, integration_step, self.Cjax)
+        outputs = rk4_pred(STATE, INPUT, self.T_lookahead, integration_step, self.Cjax)
+        # print(f"{outputs = }")
 
-        # outputs = predict_outputs(STATE, INPUT, self.T_lookahead, self.Cjax, integration_step, integrations_int)
-        print(f"USING RK4")
-        outputs = rk4_pred(STATE, INPUT, self.T_lookahead, self.Cjax)
-
-        # adjusted_invjac, cond_number = compute_adjusted_invjac(STATE, INPUT, self.T_lookahead, self.Cjax, integration_step, integrations_int)
-        adjusted_invjac, cond_number = rk4_invjac(STATE, INPUT, self.T_lookahead, self.Cjax)
+        # adjusted_invjac, cond_number = compute_adjusted_invjac(STATE, INPUT, self.T_lookahead, integration_step, self.Cjax)
+        adjusted_invjac, cond_number = rk4_invjac(STATE, INPUT, self.T_lookahead, integration_step, self.Cjax)
         print(f"cond_number: \n{cond_number}")
 
 
         outputs = np.array(outputs).reshape(-1, 1)
-        adjusted_invjac = np.array(adjusted_invjac)
-        self.jac_inv = adjusted_invjac
+        self.jac_inv = np.array(adjusted_invjac)
         return outputs
 
 

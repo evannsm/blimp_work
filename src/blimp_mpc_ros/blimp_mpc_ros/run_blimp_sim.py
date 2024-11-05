@@ -56,6 +56,7 @@ from rclpy.node import Node
 from pyJoules.handler.csv_handler import CSVHandler
 from pyJoules.device.rapl_device import RaplPackageDomain, RaplCoreDomain
 from pyJoules.energy_meter import EnergyContext
+sys.path.append('/home/<your_user>/anaconda3/envs/<env_name>/lib/python3.10/site-packages')
 
 def main(args=sys.argv):
     if len(args) < 3:
