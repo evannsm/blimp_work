@@ -75,10 +75,8 @@ fg_n = m_RB * jnp.array([0, 0, g_acc]).T  # Force due to gravity
 # Aerodynamic damping matrix
 D_CB = jnp.diag(jnp.array([0.0125, 0.0125, 0.0480, 0.000862, 0.000862, 0.000862]))
 
-
-
-## Coriolis matrix
-@jit
+##########################################################################################
+@jit # Coriolis matrix
 def C(M, nu):
     dimM = jnp.shape(M)[0]
     M11 = M[0:int(dimM/2), 0:int(dimM/2)]
@@ -91,7 +89,8 @@ def C(M, nu):
     return jnp.block([[ jnp.zeros((3, 3)),    -S(M11 @ nu1 + M12 @ nu2)],
                      [-S(M11 @ nu1 + M12 @ nu2), -S(M21 @ nu1 + M22 @ nu2)]])
 
-@jit
+##########################################################################################
+@jit # Dynamics function
 def dynamics(state, u):
         curr_x, curr_y, curr_z, curr_vx, curr_vy, curr_vz, curr_roll, curr_pitch, curr_yaw, curr_wx, curr_wy, curr_wz = state
         tau_B = jnp.array([u[0][0],
@@ -143,7 +142,13 @@ def dynamics(state, u):
 
         return jnp.array([xdot, ydot, zdot, vxdot, vydot, vzdot, rolldot, pitchdot, yawdot, wxdot, wydot, wzdot])
 
-@jit
+##########################################################################################
+@jit # Compute Jacobian
+def rk4_jacU(state, inputs, T_lookahead, integration_step, C):
+    jacobianU = jacfwd(rk4_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
+    return jacobianU.reshape(4, 4)
+
+@jit # Prediction with RK4 integration
 def rk4_pred(state, inputs, T_lookahead, integration_step, C):
     def for_function(i, state):
         k1 = dynamics(state, inputs)
@@ -156,13 +161,7 @@ def rk4_pred(state, inputs, T_lookahead, integration_step, C):
     pred_state = lax.fori_loop(0, integrations_int, for_function, state)
     return C@pred_state
 
-##########################################################################################
-@jit
-def rk4_jacU(state, inputs, T_lookahead, integration_step, C):
-    jacobianU = jacfwd(rk4_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
-    return jacobianU.reshape(4, 4)
-
-@jit
+@jit # Compute adjusted inverse Jacobian
 def rk4_invjacU(state, inputs, T_lookahead, integration_step, C):
     jacobianU = rk4_jacU(state, inputs, T_lookahead, integration_step, C)
     regularization_term = 1e-4
@@ -172,36 +171,32 @@ def rk4_invjacU(state, inputs, T_lookahead, integration_step, C):
     inv_jacobianU = jnp.linalg.pinv(jacobianU)
     return inv_jacobianU, cond_number
 
-@jit
+@jit # Compute error enhancement term for RK4
 def rk4_enhance(state, inputs, T_lookahead, integration_step, C):
     xdot = dynamics(state, inputs)
     jacobianX = jacfwd(rk4_pred, argnums=0)(state, inputs, T_lookahead, integration_step, C)
     return jacobianX@xdot
+
 ##########################################################################################
-# Function to integrate dynamics over time
-# @jit
+@jit # Euler integration
 def integrate_dynamics(state, inputs, integration_step, integrations_int):
     def for_function(i, current_state):
         return current_state + dynamics(current_state, inputs) * integration_step
     pred_state = lax.fori_loop(0, integrations_int, for_function, state)
     return pred_state
 
-# Prediction function
-@jit
+@jit # Compute Jacobian
+def euler_jacU(state, inputs, T_lookahead, integration_step, C):
+    jacobianU = jacfwd(euler_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
+    return jacobianU.reshape(4,4)
+
+@jit # Prediction with Euler integration
 def euler_pred(state, inputs, T_lookahead, integration_step, C):
     integrations_int = (T_lookahead / integration_step).astype(int)
     pred_state = integrate_dynamics(state, inputs, integration_step, integrations_int)
     return C@pred_state
 
-
-# Compute Jacobian
-@jit
-def euler_jacU(state, inputs, T_lookahead, integration_step, C):
-    jacobianU = jacfwd(euler_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
-    return jacobianU.reshape(4,4)
-
-# Compute adjusted inverse Jacobian
-@jit
+@jit # Compute adjusted inverse Jacobian
 def euler_invjacU(state, inputs, T_lookahead, integration_step, C):
     jac = euler_jacU(state, inputs, T_lookahead, integration_step, C)
     regularization_term = 1e-9
@@ -211,14 +206,13 @@ def euler_invjacU(state, inputs, T_lookahead, integration_step, C):
     inv_jacobianU = jnp.linalg.pinv(jac)
     return inv_jacobianU, cond_number
 
-@jit
+@jit # Compute error enhancement term for Euler
 def euler_enhance(state, inputs, T_lookahead, integration_step, C):
     xdot = dynamics(state, inputs)
     jacobianX = jacfwd(euler_pred, argnums=0)(state, inputs, T_lookahead, integration_step, C)
     return jacobianX@xdot
+
 ##########################################################################################
-
-
 
 def output_predictor(state, inputs, T_lookahead, integration_step, C, predictor_type, enhanced_predictor):
     enhance_term = jnp.array([0., 0., 0., 0.])

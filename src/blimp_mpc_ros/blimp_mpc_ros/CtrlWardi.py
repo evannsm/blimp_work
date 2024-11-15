@@ -210,7 +210,7 @@ class CtrlWardi(BlimpController):
 
         
         integration_step = 0.01  
-        predictor_type = 'euler' # 'euler or 'rk4'
+        predictor_type = 'rk4' # 'euler or 'rk4'
         outputs, invjacU, cond_number, enhance_term = output_predictor(STATE, INPUT, self.T_lookahead, integration_step, self.Cjax, predictor_type, self.enhanced_predictor) 
         print(f"{outputs = }")
         print(f"{invjacU = }")
@@ -381,7 +381,7 @@ class CtrlWardi(BlimpController):
         u = self.last_input + change_u
         t1 = time.time()
 
-        print(f"Total NR Comp Time: {t1 - t0 = }")
+        print(f"\nTotal NR Comp Time: {t1 - t0 = }")
         print(f"{self.use_CBFs = }")
         print(f"{self.enhanced_predictor = }")
         print(f"{base_error = }")
@@ -392,7 +392,7 @@ class CtrlWardi(BlimpController):
         print(f"{udot = }")
         print(f"{change_u = }")
         print(f"prev_u: {self.last_input}")
-        print(f"{u = }")
+        print(f"{u = }\n")
         print(f"------------------------------------------\n")
         if np.isnan(u).any():
             print("NAN in control input")
