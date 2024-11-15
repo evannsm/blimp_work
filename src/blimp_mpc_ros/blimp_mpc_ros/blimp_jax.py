@@ -156,44 +156,28 @@ def rk4_pred(state, inputs, T_lookahead, integration_step, C):
     pred_state = lax.fori_loop(0, integrations_int, for_function, state)
     return C@pred_state
 
-# @jit
-# def rk4_pred(state, inputs, T_lookahead, integration_step, C):
-#     def for_function(i, state):
-#         k1 = dynamics(state, inputs)
-#         k2 = dynamics(state + (4 / 27) * k1 * integration_step, inputs)
-#         k3 = dynamics(state + (1 / 18) * k1 * integration_step + (1 / 18) * k2 * integration_step, inputs)
-#         k4 = dynamics(state + (1 / 12) * k1 * integration_step + (1 / 6) * k3 * integration_step, inputs)
-#         k5 = dynamics(state + (1 / 8) * k1 * integration_step + (3 / 8) * k4 * integration_step, inputs)
-#         k6 = dynamics(state + (1 / 2) * k1 * integration_step - (3 / 2) * k4 * integration_step + (3 / 2) * k5 * integration_step, inputs)
-#         k7 = dynamics(state - (3 / 7) * k1 * integration_step + (2 / 7) * k3 * integration_step + (12 / 7) * k4 * integration_step - (12 / 7) * k5 * integration_step + (8 / 7) * k6 * integration_step, inputs)
-#         k8 = dynamics(state + (7 / 90) * k1 * integration_step + (32 / 90) * k5 * integration_step + (12 / 90) * k6 * integration_step + (32 / 90) * k7 * integration_step, inputs)
-#         k9 = dynamics(state + (4 / 27) * k1 * integration_step + (27 / 27) * k4 * integration_step - (27 / 27) * k6 * integration_step + (27 / 27) * k7 * integration_step, inputs)
-#         k10 = dynamics(state + (9 / 40) * k1 * integration_step + (9 / 40) * k6 * integration_step + (32 / 40) * k8 * integration_step - (32 / 40) * k9 * integration_step, inputs)
-#         k11 = dynamics(state + (9 / 10) * k1 * integration_step + (4 / 10) * k8 * integration_step - (4 / 10) * k9 * integration_step + (9 / 10) * k10 * integration_step, inputs)
-#         k12 = dynamics(state + (1 / 2) * k1 * integration_step + (3 / 4) * k10 * integration_step, inputs)
-#         k13 = dynamics(state + (3 / 10) * k1 * integration_step + (8 / 15) * k12 * integration_step, inputs)
-
-#         return state + (41 * k1 + 27 * k3 + 272 * k4 + 27 * k5 + 216 * k6 + 216 * k7 + 41 * k8) * integration_step / 840
-
-#     integrations_int = (T_lookahead / integration_step).astype(int)
-#     pred_state = lax.fori_loop(0, integrations_int, for_function, state)
-#     return C @ pred_state
+##########################################################################################
+@jit
+def rk4_jacU(state, inputs, T_lookahead, integration_step, C):
+    jacobianU = jacfwd(rk4_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
+    return jacobianU.reshape(4, 4)
 
 @jit
-def rk4_jac(state, inputs, T_lookahead, integration_step, C):
-    jacobian = jacfwd(rk4_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
-    return jacobian.reshape(4, 4)
-
-@jit
-def rk4_invjac(state, inputs, T_lookahead, integration_step, C):
-    jacobian = rk4_jac(state, inputs, T_lookahead, integration_step, C)
+def rk4_invjacU(state, inputs, T_lookahead, integration_step, C):
+    jacobianU = rk4_jacU(state, inputs, T_lookahead, integration_step, C)
     regularization_term = 1e-4
-    jacobian += jnp.eye(jacobian.shape[0]) * regularization_term
+    jacobianU += jnp.eye(jacobianU.shape[0]) * regularization_term
 
-    cond_number = jnp.linalg.cond(jacobian)
-    inv_jacobian = jnp.linalg.pinv(jacobian)
-    return inv_jacobian, cond_number
+    cond_number = jnp.linalg.cond(jacobianU)
+    inv_jacobianU = jnp.linalg.pinv(jacobianU)
+    return inv_jacobianU, cond_number
 
+@jit
+def rk4_enhance(state, inputs, T_lookahead, integration_step, C):
+    xdot = dynamics(state, inputs)
+    jacobianX = jacfwd(rk4_pred, argnums=0)(state, inputs, T_lookahead, integration_step, C)
+    return jacobianX@xdot
+##########################################################################################
 # Function to integrate dynamics over time
 # @jit
 def integrate_dynamics(state, inputs, integration_step, integrations_int):
@@ -204,7 +188,7 @@ def integrate_dynamics(state, inputs, integration_step, integrations_int):
 
 # Prediction function
 @jit
-def predict_outputs(state, inputs, T_lookahead, integration_step, C):
+def euler_pred(state, inputs, T_lookahead, integration_step, C):
     integrations_int = (T_lookahead / integration_step).astype(int)
     pred_state = integrate_dynamics(state, inputs, integration_step, integrations_int)
     return C@pred_state
@@ -212,17 +196,42 @@ def predict_outputs(state, inputs, T_lookahead, integration_step, C):
 
 # Compute Jacobian
 @jit
-def compute_jacobian(state, inputs, T_lookahead, integration_step, C):
-    jacobian = jacfwd(predict_outputs, argnums=1)(state, inputs, T_lookahead, integration_step, C)
-    return jacobian.reshape(4,4)
+def euler_jacU(state, inputs, T_lookahead, integration_step, C):
+    jacobianU = jacfwd(euler_pred, argnums=1)(state, inputs, T_lookahead, integration_step, C)
+    return jacobianU.reshape(4,4)
 
 # Compute adjusted inverse Jacobian
 @jit
-def compute_adjusted_invjac(state, inputs, T_lookahead, integration_step, C):
-    jac = compute_jacobian(state, inputs, T_lookahead, integration_step, C)
+def euler_invjacU(state, inputs, T_lookahead, integration_step, C):
+    jac = euler_jacU(state, inputs, T_lookahead, integration_step, C)
     regularization_term = 1e-9
     jac += jnp.eye(jac.shape[0]) * regularization_term
     
     cond_number = jnp.linalg.cond(jac)
-    inv_jacobian = jnp.linalg.pinv(jac)
-    return inv_jacobian, cond_number
+    inv_jacobianU = jnp.linalg.pinv(jac)
+    return inv_jacobianU, cond_number
+
+@jit
+def euler_enhance(state, inputs, T_lookahead, integration_step, C):
+    xdot = dynamics(state, inputs)
+    jacobianX = jacfwd(euler_pred, argnums=0)(state, inputs, T_lookahead, integration_step, C)
+    return jacobianX@xdot
+##########################################################################################
+
+
+
+def output_predictor(state, inputs, T_lookahead, integration_step, C, predictor_type, enhanced_predictor):
+    enhance_term = jnp.array([0., 0., 0., 0.])
+    if predictor_type == 'euler': # 0 is for euler
+        outputs = euler_pred(state, inputs, T_lookahead, integration_step, C)
+        adjusted_invjacU, cond_number = euler_invjacU(state, inputs, T_lookahead, integration_step, C)
+        enhance_term = euler_enhance(state, inputs, T_lookahead, integration_step, C) if enhanced_predictor else enhance_term
+    elif predictor_type == 'rk4': # 1 is for rk4
+        outputs = rk4_pred(state, inputs, T_lookahead, integration_step, C)
+        adjusted_invjacU, cond_number = rk4_invjacU(state, inputs, T_lookahead, integration_step, C)
+        enhance_term = rk4_enhance(state, inputs, T_lookahead, integration_step, C) if enhanced_predictor else enhance_term
+    else:
+        raise ValueError(f"Predictor type {predictor_type} not recognized. Use 'rk4' or 'euler'.")
+    
+    return outputs, adjusted_invjacU, cond_number, enhance_term
+
